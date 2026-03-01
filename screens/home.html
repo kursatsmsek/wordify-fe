@@ -1,0 +1,234 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Home Hub - Vocabulary Builder</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#47b4eb",
+              "background-light": "#f6f7f8",
+              "background-dark": "#111c21",
+            },
+            fontFamily: {
+              display: ["Plus Jakarta Sans"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased"
+  >
+    <div
+      class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <!-- Navigation -->
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-10 py-3"
+        >
+          <div class="flex items-center gap-4 text-primary">
+            <div class="size-6 flex items-center justify-center">
+              <span class="material-symbols-outlined text-3xl"
+                >auto_stories</span
+              >
+            </div>
+            <h2
+              class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              Home Hub
+            </h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-9">
+              <a
+                class="text-slate-900 dark:text-slate-100 text-sm font-medium leading-normal hover:text-primary transition-colors"
+                href="#"
+                >Home</a
+              >
+              <a
+                class="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal hover:text-primary transition-colors"
+                href="#"
+                >Vocabulary</a
+              >
+              <a
+                class="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal hover:text-primary transition-colors"
+                href="#"
+                >Settings</a
+              >
+            </div>
+            <div
+              class="bg-primary/20 bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex items-center justify-center text-primary"
+              data-alt="User avatar placeholder with soft blue circular background"
+            >
+              <span class="material-symbols-outlined">person</span>
+            </div>
+          </div>
+        </header>
+        <main class="flex flex-1 justify-center py-12">
+          <div
+            class="layout-content-container flex flex-col max-w-[640px] flex-1 px-4"
+          >
+            <!-- Welcome Hero -->
+            <div class="text-center mb-10">
+              <h1
+                class="text-slate-900 dark:text-slate-100 tracking-tight text-[40px] font-bold leading-tight pb-2"
+              >
+                Ready to learn?
+              </h1>
+              <p class="text-slate-500 dark:text-slate-400 text-lg">
+                Pick up where you left off or start a fresh session.
+              </p>
+            </div>
+            <!-- Start Quiz Action -->
+            <div class="flex flex-col gap-6 items-center">
+              <button
+                class="flex w-full max-w-[320px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-16 px-5 bg-primary text-white text-xl font-bold leading-normal tracking-[0.015em] hover:brightness-105 transition-all shadow-lg shadow-primary/20"
+              >
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined">play_circle</span>
+                  Start Quiz
+                </span>
+              </button>
+            </div>
+            <!-- Quiz Type Selector -->
+            <div class="mt-12">
+              <h4
+                class="text-slate-600 dark:text-slate-400 text-sm font-bold leading-normal tracking-[0.015em] px-4 py-2 text-center uppercase"
+              >
+                Quiz Type
+              </h4>
+              <div class="flex px-4 py-3">
+                <div
+                  class="flex h-12 flex-1 items-center justify-center rounded-xl bg-slate-200/50 dark:bg-slate-800 p-1.5"
+                >
+                  <label
+                    class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 dark:text-slate-400 text-sm font-semibold transition-all"
+                  >
+                    <span class="truncate">Last Wrong</span>
+                    <input
+                      class="invisible w-0"
+                      name="quiz_type"
+                      type="radio"
+                      value="Last Wrong"
+                    />
+                  </label>
+                  <label
+                    class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 dark:text-slate-400 text-sm font-semibold transition-all"
+                  >
+                    <span class="truncate">Recent</span>
+                    <input
+                      checked=""
+                      class="invisible w-0"
+                      name="quiz_type"
+                      type="radio"
+                      value="Recent"
+                    />
+                  </label>
+                  <label
+                    class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 dark:text-slate-400 text-sm font-semibold transition-all"
+                  >
+                    <span class="truncate">Random</span>
+                    <input
+                      class="invisible w-0"
+                      name="quiz_type"
+                      type="radio"
+                      value="Random"
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
+            <!-- Statistics Box -->
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
+              <div
+                class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-xl text-center shadow-sm"
+              >
+                <div class="text-primary mb-2 flex justify-center">
+                  <span class="material-symbols-outlined text-3xl"
+                    >list_alt</span
+                  >
+                </div>
+                <p
+                  class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider"
+                >
+                  Total Words
+                </p>
+                <h3
+                  class="text-slate-900 dark:text-slate-100 text-3xl font-bold mt-1"
+                >
+                  1,248
+                </h3>
+              </div>
+              <div
+                class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-xl text-center shadow-sm"
+              >
+                <div class="text-primary mb-2 flex justify-center">
+                  <span class="material-symbols-outlined text-3xl">quiz</span>
+                </div>
+                <p
+                  class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider"
+                >
+                  Total Quizzes
+                </p>
+                <h3
+                  class="text-slate-900 dark:text-slate-100 text-3xl font-bold mt-1"
+                >
+                  56
+                </h3>
+              </div>
+            </div>
+            <!-- Quick Actions -->
+            <div class="mt-12 flex justify-center gap-4 px-4">
+              <button
+                class="flex-1 max-w-[200px] flex items-center justify-center gap-2 py-3 px-4 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors font-medium"
+              >
+                <span class="material-symbols-outlined text-xl">add</span>
+                Add Words
+              </button>
+              <button
+                class="flex-1 max-w-[200px] flex items-center justify-center gap-2 py-3 px-4 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors font-medium"
+              >
+                <span class="material-symbols-outlined text-xl">history</span>
+                Review History
+              </button>
+            </div>
+          </div>
+        </main>
+        <footer
+          class="py-10 text-center border-t border-slate-200 dark:border-slate-800"
+        >
+          <p class="text-slate-400 dark:text-slate-600 text-xs">
+            © 2023 Home Hub. Keep learning every day.
+          </p>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

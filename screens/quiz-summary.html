@@ -1,0 +1,286 @@
+<!doctype html>
+
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Quiz Summary | VocabLearn</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2b8cee",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Plus Jakarta Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "1rem",
+              lg: "2rem",
+              xl: "3rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen"
+  >
+    <div class="layout-container flex h-full grow flex-col">
+      <!-- Top Navigation Bar -->
+      <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 md:px-20 py-4 sticky top-0 z-50"
+      >
+        <div class="flex items-center gap-3">
+          <div class="text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl">menu_book</span>
+          </div>
+          <h2
+            class="text-slate-900 dark:text-white text-xl font-bold tracking-tight"
+          >
+            VocabLearn
+          </h2>
+        </div>
+        <div class="flex flex-1 justify-end gap-6 items-center">
+          <nav class="hidden md:flex items-center gap-8">
+            <a
+              class="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors"
+              href="#"
+              >Dashboard</a
+            >
+            <a class="text-primary text-sm font-semibold" href="#">Quizzes</a>
+            <a
+              class="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors"
+              href="#"
+              >Settings</a
+            >
+          </nav>
+          <div class="bg-primary/10 rounded-full p-1 border border-primary/20">
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9"
+              data-alt="User profile avatar placeholder"
+              style="
+                background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDahueWIKbXefD01jDQEY6v_WeFnogO4Zw2s6w6FW0KhlxR0XQ9wS4o12ZRg-kmZ3imMG5sy2vFbhhKXkDEZnvU26g235Q-KMBmtXYeOzBk3ln4lmmWmPhDKmjJ5DrOpmmsmVb9FM9MnyHrqUemm-Ho7r96fD2LQSZKhxB7ayV3fJKrkkkO2DMuZiaXtnDlG9m1mfQTn59XPTOl_49Sahdhpd7aSs9k8o-tXb4-NxXKFqnsULFlEEpdKobBUJLnr21ntjCK9vmpcPE&quot;);
+              "
+            ></div>
+          </div>
+        </div>
+      </header>
+      <main class="flex flex-1 justify-center py-10 px-4 md:px-10">
+        <div class="max-w-[800px] w-full flex flex-col gap-8">
+          <!-- Hero Section -->
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2 text-primary">
+              <span class="material-symbols-outlined">check_circle</span>
+              <span class="text-sm font-bold uppercase tracking-wider"
+                >Quiz Completed</span
+              >
+            </div>
+            <h1
+              class="text-slate-900 dark:text-white text-4xl font-extrabold tracking-tight"
+            >
+              Quiz Summary
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-lg">
+              Great job completing the session! Here is how you performed.
+            </p>
+          </div>
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              class="flex flex-col gap-3 rounded-2xl p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-wide"
+                >
+                  Total Correct
+                </p>
+                <span
+                  class="material-symbols-outlined text-green-500 bg-green-50 dark:bg-green-500/10 p-2 rounded-lg"
+                  >sentiment_very_satisfied</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p class="text-slate-900 dark:text-white text-5xl font-black">
+                  18
+                </p>
+                <p
+                  class="text-green-600 dark:text-green-400 text-sm font-bold flex items-center"
+                >
+                  <span class="material-symbols-outlined text-xs"
+                    >arrow_upward</span
+                  >
+                  90%
+                </p>
+              </div>
+              <div
+                class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full mt-2 overflow-hidden"
+              >
+                <div
+                  class="bg-green-500 h-full rounded-full"
+                  style="width: 90%"
+                ></div>
+              </div>
+            </div>
+            <div
+              class="flex flex-col gap-3 rounded-2xl p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-wide"
+                >
+                  Total Wrong
+                </p>
+                <span
+                  class="material-symbols-outlined text-red-500 bg-red-50 dark:bg-red-500/10 p-2 rounded-lg"
+                  >sentiment_dissatisfied</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p class="text-slate-900 dark:text-white text-5xl font-black">
+                  2
+                </p>
+                <p
+                  class="text-red-600 dark:text-red-400 text-sm font-bold flex items-center"
+                >
+                  <span class="material-symbols-outlined text-xs"
+                    >arrow_downward</span
+                  >
+                  10%
+                </p>
+              </div>
+              <div
+                class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full mt-2 overflow-hidden"
+              >
+                <div
+                  class="bg-red-500 h-full rounded-full"
+                  style="width: 10%"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <!-- Review Section -->
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400"
+                >list_alt</span
+              >
+              <h2 class="text-slate-900 dark:text-white text-xl font-bold">
+                Words to Review
+              </h2>
+            </div>
+            <div
+              class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm"
+            >
+              <table class="w-full border-collapse text-left">
+                <thead class="bg-slate-50 dark:bg-slate-800/50">
+                  <tr>
+                    <th
+                      class="px-6 py-4 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider"
+                    >
+                      Word
+                    </th>
+                    <th
+                      class="px-6 py-4 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider"
+                    >
+                      Your Answer
+                    </th>
+                    <th
+                      class="px-6 py-4 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider"
+                    >
+                      Correct Definition
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                  <tr
+                    class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
+                  >
+                    <td
+                      class="px-6 py-5 text-slate-900 dark:text-white font-bold"
+                    >
+                      Ephemeral
+                    </td>
+                    <td class="px-6 py-5">
+                      <span
+                        class="px-3 py-1 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-sm font-medium"
+                        >Short-lived</span
+                      >
+                    </td>
+                    <td
+                      class="px-6 py-5 text-slate-500 dark:text-slate-400 text-sm italic"
+                    >
+                      Lasting for a very short time
+                    </td>
+                  </tr>
+                  <tr
+                    class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
+                  >
+                    <td
+                      class="px-6 py-5 text-slate-900 dark:text-white font-bold"
+                    >
+                      Languid
+                    </td>
+                    <td class="px-6 py-5">
+                      <span
+                        class="px-3 py-1 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-sm font-medium"
+                        >Slow</span
+                      >
+                    </td>
+                    <td
+                      class="px-6 py-5 text-slate-500 dark:text-slate-400 text-sm italic"
+                    >
+                      Displaying or having a disinclination for physical
+                      exertion or effort
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Action Button -->
+          <div class="flex flex-col md:flex-row gap-4 pt-4">
+            <button
+              class="flex-1 bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/25"
+            >
+              <span class="material-symbols-outlined">restart_alt</span>
+              Restart Quiz
+            </button>
+            <button
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-bold py-4 px-8 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
+            >
+              <span class="material-symbols-outlined">home</span>
+              Back to Dashboard
+            </button>
+          </div>
+        </div>
+      </main>
+      <!-- Minimal Footer -->
+      <footer
+        class="py-8 text-center text-slate-400 dark:text-slate-600 text-sm"
+      >
+        <p>© 2024 VocabLearn. Keep up the momentum!</p>
+      </footer>
+    </div>
+  </body>
+</html>

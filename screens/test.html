@@ -1,0 +1,221 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Active Quiz Session - VocabLearn</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2b8cee",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Plus Jakarta Sans"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen"
+  >
+    <div class="layout-container flex h-full grow flex-col">
+      <!-- Top Navigation Bar -->
+      <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white dark:bg-background-dark px-6 md:px-10 py-3"
+      >
+        <div class="flex items-center gap-4 text-primary">
+          <div
+            class="size-8 flex items-center justify-center bg-primary/10 rounded-lg"
+          >
+            <span class="material-symbols-outlined text-primary">school</span>
+          </div>
+          <h2
+            class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]"
+          >
+            VocabLearn
+          </h2>
+        </div>
+        <div class="flex flex-1 justify-end gap-8">
+          <div class="hidden md:flex items-center gap-9">
+            <a
+              class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal"
+              href="#"
+              >Dashboard</a
+            >
+            <a
+              class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal"
+              href="#"
+              >Courses</a
+            >
+            <a
+              class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal"
+              href="#"
+              >Settings</a
+            >
+          </div>
+          <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20"
+            data-alt="User profile avatar placeholder image"
+            style="
+              background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCrog6aS-mK2tJ3JhnLgWGJXSSDUoxz3Dnn1SqIGQ0aHat9ObnUGQykxdKEMh0plRMeyojpHFB3-V0LuPAPNFoUzwOyz87sQSi6pOhQvbh3ITKgotoANggTNoIfmkO8il9XqOX-fde3FDpP10gioOrM0f5vB3dAhgqkMAFO9ZF-kyi3N22gYlmhTB8HtUmPVwoG-HsWEEKapeVgC3--f7fOZ_wLBx1ma6A6ikK16dhMZcIfIXjGMBTn7l2GwVPHFb-vRxiutPlh2qc&quot;);
+            "
+          ></div>
+        </div>
+      </header>
+      <main
+        class="flex-1 flex flex-col items-center justify-center px-4 py-8 md:py-12"
+      >
+        <div class="w-full max-w-[640px] flex flex-col gap-8">
+          <!-- Progress Header -->
+          <div class="flex flex-col gap-3 w-full">
+            <div class="flex gap-6 justify-between items-center">
+              <p
+                class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal uppercase tracking-wider"
+              >
+                Current Session
+              </p>
+              <p class="text-primary text-sm font-bold leading-normal">
+                13 / 20 Words
+              </p>
+            </div>
+            <div class="rounded-full bg-primary/10 h-3 overflow-hidden">
+              <div
+                class="h-full rounded-full bg-primary"
+                style="width: 65%"
+              ></div>
+            </div>
+          </div>
+          <!-- Quiz Card -->
+          <div
+            class="bg-white dark:bg-slate-900/50 rounded-xl shadow-sm border border-primary/5 p-8 md:p-12 flex flex-col items-center text-center"
+          >
+            <span
+              class="text-primary/60 text-xs font-bold uppercase tracking-widest mb-4"
+              >Translate to English</span
+            >
+            <h1
+              class="text-slate-900 dark:text-slate-100 tracking-tight text-5xl font-bold leading-tight mb-6"
+            >
+              Éphémère
+            </h1>
+            <div class="max-w-md mx-auto mb-10">
+              <p
+                class="text-slate-600 dark:text-slate-400 text-lg italic leading-relaxed"
+              >
+                "The beauty of the sunset was
+                <span
+                  class="border-b-2 border-primary/30 px-4 text-transparent select-none"
+                  >_______</span
+                >, lasting only a few minutes."
+              </p>
+            </div>
+            <!-- Input Area -->
+            <div class="w-full max-w-sm flex flex-col gap-4">
+              <input
+                autofocus=""
+                class="w-full px-6 py-4 bg-background-light dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-xl text-center text-xl font-medium transition-all outline-none text-slate-900 dark:text-slate-100"
+                placeholder="Type your answer here..."
+                type="text"
+              />
+              <div class="flex gap-3 justify-center mt-2">
+                <button
+                  class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-xl font-bold text-sm transition-colors flex items-center gap-2"
+                >
+                  Check Answer
+                  <span class="material-symbols-outlined text-sm"
+                    >arrow_forward</span
+                  >
+                </button>
+                <button
+                  class="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 px-6 py-3 rounded-xl font-bold text-sm transition-colors"
+                >
+                  Skip
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Multiple Choice (Alternative UI Option) -->
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              class="bg-white dark:bg-slate-900/50 border border-primary/10 hover:border-primary hover:bg-primary/5 p-4 rounded-xl text-slate-700 dark:text-slate-300 font-medium transition-all text-center"
+            >
+              Permanent
+            </button>
+            <button
+              class="bg-white dark:bg-slate-900/50 border border-primary/10 hover:border-primary hover:bg-primary/5 p-4 rounded-xl text-slate-700 dark:text-slate-300 font-medium transition-all text-center"
+            >
+              Ephemeral
+            </button>
+            <button
+              class="bg-white dark:bg-slate-900/50 border border-primary/10 hover:border-primary hover:bg-primary/5 p-4 rounded-xl text-slate-700 dark:text-slate-300 font-medium transition-all text-center"
+            >
+              Eternal
+            </button>
+            <button
+              class="bg-white dark:bg-slate-900/50 border border-primary/10 hover:border-primary hover:bg-primary/5 p-4 rounded-xl text-slate-700 dark:text-slate-300 font-medium transition-all text-center"
+            >
+              Substantial
+            </button>
+          </div>
+          <!-- Keyboard Shortcut Hint -->
+          <div
+            class="flex justify-center gap-6 text-slate-400 dark:text-slate-600 text-xs font-medium"
+          >
+            <span class="flex items-center gap-1">
+              <kbd
+                class="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-700"
+                >Enter</kbd
+              >
+              to submit
+            </span>
+            <span class="flex items-center gap-1">
+              <kbd
+                class="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-700"
+                >Esc</kbd
+              >
+              to skip
+            </span>
+          </div>
+        </div>
+      </main>
+      <!-- Minimal Footer -->
+      <footer
+        class="py-6 px-10 text-center text-slate-400 dark:text-slate-600 text-sm"
+      >
+        Press the speaker icon to hear the pronunciation
+        <button class="ml-2 p-2 hover:text-primary transition-colors">
+          <span class="material-symbols-outlined text-base align-middle"
+            >volume_up</span
+          >
+        </button>
+      </footer>
+    </div>
+  </body>
+</html>

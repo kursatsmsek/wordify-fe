@@ -1,0 +1,515 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Word Management - Lexicon</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2b8cee",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Plus Jakarta Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "1rem",
+              lg: "2rem",
+              xl: "3rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen"
+  >
+    <div
+      class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <!-- Top Navigation Bar -->
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 md:px-10"
+        >
+          <div class="flex items-center gap-8">
+            <div class="flex items-center gap-3 text-primary">
+              <div
+                class="size-8 bg-primary/10 rounded-lg flex items-center justify-center"
+              >
+                <span class="material-symbols-outlined text-primary"
+                  >menu_book</span
+                >
+              </div>
+              <h2
+                class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight"
+              >
+                Lexicon
+              </h2>
+            </div>
+            <label class="hidden md:flex flex-col min-w-40 h-10 max-w-64">
+              <div
+                class="flex w-full flex-1 items-stretch rounded-full h-full bg-slate-100 dark:bg-slate-800 px-4"
+              >
+                <div class="text-slate-500 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-lg">search</span>
+                </div>
+                <input
+                  class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 h-full placeholder:text-slate-500 px-2 text-sm font-normal"
+                  placeholder="Search words..."
+                  value=""
+                />
+              </div>
+            </label>
+          </div>
+          <div class="flex flex-1 justify-end gap-6 items-center">
+            <nav class="hidden lg:flex items-center gap-8">
+              <a
+                class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium leading-normal"
+                href="#"
+                >Dashboard</a
+              >
+              <a
+                class="text-primary text-sm font-semibold leading-normal"
+                href="#"
+                >Vocabulary</a
+              >
+              <a
+                class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium leading-normal"
+                href="#"
+                >Quizzes</a
+              >
+              <a
+                class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium leading-normal"
+                href="#"
+                >Settings</a
+              >
+            </nav>
+            <div
+              class="h-8 w-px bg-slate-200 dark:bg-slate-800 hidden lg:block"
+            ></div>
+            <button
+              class="flex min-w-[40px] md:min-w-[120px] cursor-pointer items-center justify-center rounded-full h-10 px-4 bg-primary text-white text-sm font-bold leading-normal transition-all hover:bg-primary/90"
+            >
+              <span class="material-symbols-outlined md:mr-2 text-lg">add</span>
+              <span class="truncate hidden md:inline">Add Word</span>
+            </button>
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20"
+              data-alt="User profile avatar with colorful geometric shapes"
+              style="
+                background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAu7iYKFPa3LDUpDRIiHqe_stm3RQItKb_VRmwn5N1VeCxDIO4Vua8c3uAVw1yYTddUebLTakIYPvxAMzFdDgKmMC_josPn8ZvqtZqLZQcJCmbZhTtoniVt9FP0nKja3GXg5AHHdtU_d7hguWnpeR4iQneCg0OQutINIe9lii1IZenYbB14AZwilwpVTXCkatDQkcOwTrBjmxiQnLI05Pkw1dYBM88xuZieZnpViXYfDUp1seB_nlr0dJTy6myfpZ2DMzOLW0G_T2s&quot;);
+              "
+            ></div>
+          </div>
+        </header>
+        <main class="flex flex-1 justify-center py-8">
+          <div
+            class="layout-content-container flex flex-col max-w-[1100px] flex-1 px-4 md:px-10"
+          >
+            <!-- Title and Summary Section -->
+            <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+              <div class="flex flex-col gap-2">
+                <h1
+                  class="text-slate-900 dark:text-slate-100 text-3xl md:text-4xl font-black leading-tight tracking-tight"
+                >
+                  Word Management
+                </h1>
+                <p
+                  class="text-slate-500 dark:text-slate-400 text-base font-normal max-w-md"
+                >
+                  Organize and track your learning progress. You currently have
+                  <span class="text-primary font-semibold">124 words</span> in
+                  your list.
+                </p>
+              </div>
+              <div class="flex gap-3">
+                <button
+                  class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                >
+                  <span class="material-symbols-outlined text-lg"
+                    >filter_list</span
+                  >
+                  Filter
+                </button>
+                <button
+                  class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                >
+                  <span class="material-symbols-outlined text-lg"
+                    >file_download</span
+                  >
+                  Export
+                </button>
+              </div>
+            </div>
+            <!-- Table Section -->
+            <div
+              class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm shadow-slate-200/50"
+            >
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/50">
+                      <th
+                        class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider"
+                      >
+                        English Word
+                      </th>
+                      <th
+                        class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider"
+                      >
+                        Turkish Meaning
+                      </th>
+                      <th
+                        class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider"
+                      >
+                        Success Rate
+                      </th>
+                      <th
+                        class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider text-right"
+                      >
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="divide-y divide-slate-100 dark:divide-slate-800"
+                  >
+                    <tr
+                      class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group"
+                    >
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-900 dark:text-slate-100 font-semibold text-base"
+                          >Abundant</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-600 dark:text-slate-400 text-base"
+                          >Bereketli, Bol</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="w-24 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 h-2"
+                          >
+                            <div
+                              class="h-full bg-primary rounded-full"
+                              style="width: 85%"
+                            ></div>
+                          </div>
+                          <span
+                            class="text-slate-700 dark:text-slate-300 text-sm font-bold"
+                            >85%</span
+                          >
+                        </div>
+                      </td>
+                      <td class="px-6 py-5 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button
+                            class="p-2 rounded-full hover:bg-primary/10 text-slate-400 hover:text-primary transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >edit</span
+                            >
+                          </button>
+                          <button
+                            class="p-2 rounded-full hover:bg-red-50 text-slate-400 hover:text-red-500 transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >delete</span
+                            >
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group"
+                    >
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-900 dark:text-slate-100 font-semibold text-base"
+                          >Consistent</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-600 dark:text-slate-400 text-base"
+                          >Tutarlı</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="w-24 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 h-2"
+                          >
+                            <div
+                              class="h-full bg-primary rounded-full"
+                              style="width: 72%"
+                            ></div>
+                          </div>
+                          <span
+                            class="text-slate-700 dark:text-slate-300 text-sm font-bold"
+                            >72%</span
+                          >
+                        </div>
+                      </td>
+                      <td class="px-6 py-5 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button
+                            class="p-2 rounded-full hover:bg-primary/10 text-slate-400 hover:text-primary transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >edit</span
+                            >
+                          </button>
+                          <button
+                            class="p-2 rounded-full hover:bg-red-50 text-slate-400 hover:text-red-500 transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >delete</span
+                            >
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group"
+                    >
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-900 dark:text-slate-100 font-semibold text-base"
+                          >Eloquent</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-600 dark:text-slate-400 text-base"
+                          >Etkileyici, Güzel Konuşan</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="w-24 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 h-2"
+                          >
+                            <div
+                              class="h-full bg-primary rounded-full"
+                              style="width: 90%"
+                            ></div>
+                          </div>
+                          <span
+                            class="text-slate-700 dark:text-slate-300 text-sm font-bold"
+                            >90%</span
+                          >
+                        </div>
+                      </td>
+                      <td class="px-6 py-5 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button
+                            class="p-2 rounded-full hover:bg-primary/10 text-slate-400 hover:text-primary transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >edit</span
+                            >
+                          </button>
+                          <button
+                            class="p-2 rounded-full hover:bg-red-50 text-slate-400 hover:text-red-500 transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >delete</span
+                            >
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group"
+                    >
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-900 dark:text-slate-100 font-semibold text-base"
+                          >Frugal</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-600 dark:text-slate-400 text-base"
+                          >Tutumlu, İdareli</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="w-24 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 h-2"
+                          >
+                            <div
+                              class="h-full bg-yellow-500 rounded-full"
+                              style="width: 45%"
+                            ></div>
+                          </div>
+                          <span
+                            class="text-slate-700 dark:text-slate-300 text-sm font-bold"
+                            >45%</span
+                          >
+                        </div>
+                      </td>
+                      <td class="px-6 py-5 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button
+                            class="p-2 rounded-full hover:bg-primary/10 text-slate-400 hover:text-primary transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >edit</span
+                            >
+                          </button>
+                          <button
+                            class="p-2 rounded-full hover:bg-red-50 text-slate-400 hover:text-red-500 transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >delete</span
+                            >
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group"
+                    >
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-900 dark:text-slate-100 font-semibold text-base"
+                          >Resilient</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-slate-600 dark:text-slate-400 text-base"
+                          >Dayanıklı, Esnek</span
+                        >
+                      </td>
+                      <td class="px-6 py-5">
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="w-24 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 h-2"
+                          >
+                            <div
+                              class="h-full bg-primary rounded-full"
+                              style="width: 50%"
+                            ></div>
+                          </div>
+                          <span
+                            class="text-slate-700 dark:text-slate-300 text-sm font-bold"
+                            >50%</span
+                          >
+                        </div>
+                      </td>
+                      <td class="px-6 py-5 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button
+                            class="p-2 rounded-full hover:bg-primary/10 text-slate-400 hover:text-primary transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >edit</span
+                            >
+                          </button>
+                          <button
+                            class="p-2 rounded-full hover:bg-red-50 text-slate-400 hover:text-red-500 transition-all"
+                          >
+                            <span class="material-symbols-outlined text-lg"
+                              >delete</span
+                            >
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="flex items-center justify-between mt-8">
+              <p class="text-sm text-slate-500 dark:text-slate-400">
+                Showing
+                <span class="font-bold text-slate-700 dark:text-slate-300"
+                  >1</span
+                >
+                to
+                <span class="font-bold text-slate-700 dark:text-slate-300"
+                  >5</span
+                >
+                of
+                <span class="font-bold text-slate-700 dark:text-slate-300"
+                  >124</span
+                >
+                results
+              </p>
+              <div class="flex items-center gap-1">
+                <button
+                  class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-700 dark:text-slate-300"
+                >
+                  <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button
+                  class="flex size-10 items-center justify-center rounded-full bg-primary text-white font-bold text-sm shadow-md shadow-primary/20"
+                >
+                  1
+                </button>
+                <button
+                  class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-700 dark:text-slate-300 text-sm"
+                >
+                  2
+                </button>
+                <button
+                  class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-700 dark:text-slate-300 text-sm"
+                >
+                  3
+                </button>
+                <span class="px-2 text-slate-400">...</span>
+                <button
+                  class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-700 dark:text-slate-300 text-sm"
+                >
+                  25
+                </button>
+                <button
+                  class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-700 dark:text-slate-300"
+                >
+                  <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+        <!-- Quick Footer -->
+        <footer
+          class="mt-auto py-8 text-center text-slate-400 text-sm border-t border-slate-200 dark:border-slate-800"
+        >
+          <p>© 2024 Lexicon Education Platform. All rights reserved.</p>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

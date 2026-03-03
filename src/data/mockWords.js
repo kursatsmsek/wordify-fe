@@ -6,7 +6,7 @@ export const MOCK_WORDS = [
     level: "B1",
     examples: [
       "The region has abundant natural resources.",
-      "Food was abundant at the festival."
+      "Food was abundant at the festival.",
     ],
     successRate: 85,
     quizCount: 12,
@@ -18,7 +18,7 @@ export const MOCK_WORDS = [
     level: "B2",
     examples: [
       "She has been consistent in her efforts.",
-      "His performance is consistent throughout the year."
+      "His performance is consistent throughout the year.",
     ],
     successRate: 72,
     quizCount: 9,
@@ -30,7 +30,7 @@ export const MOCK_WORDS = [
     level: "C1",
     examples: [
       "He gave an eloquent speech at the ceremony.",
-      "She is an eloquent writer."
+      "She is an eloquent writer.",
     ],
     successRate: 90,
     quizCount: 15,
@@ -42,7 +42,7 @@ export const MOCK_WORDS = [
     level: "B2",
     examples: [
       "Living a frugal life helped him save money.",
-      "She is frugal with her spending."
+      "She is frugal with her spending.",
     ],
     successRate: 45,
     quizCount: 7,
@@ -54,7 +54,7 @@ export const MOCK_WORDS = [
     level: "B2",
     examples: [
       "Children are surprisingly resilient.",
-      "The resilient community rebuilt after the disaster."
+      "The resilient community rebuilt after the disaster.",
     ],
     successRate: 50,
     quizCount: 8,
@@ -66,7 +66,7 @@ export const MOCK_WORDS = [
     level: "C1",
     examples: [
       "The beauty of the sunset was ephemeral, lasting only a few minutes.",
-      "Fame can be ephemeral in the modern world."
+      "Fame can be ephemeral in the modern world.",
     ],
     successRate: 38,
     quizCount: 6,
@@ -78,7 +78,7 @@ export const MOCK_WORDS = [
     level: "C1",
     examples: [
       "She felt languid in the summer heat.",
-      "He gave a languid wave of his hand."
+      "He gave a languid wave of his hand.",
     ],
     successRate: 30,
     quizCount: 5,
@@ -90,7 +90,7 @@ export const MOCK_WORDS = [
     level: "B2",
     examples: [
       "A pragmatic approach is needed to solve this problem.",
-      "She is known for her pragmatic thinking."
+      "She is known for her pragmatic thinking.",
     ],
     successRate: 78,
     quizCount: 11,
@@ -102,7 +102,7 @@ export const MOCK_WORDS = [
     level: "C1",
     examples: [
       "Despite many failures, he remained tenacious.",
-      "Her tenacious spirit helped her succeed."
+      "Her tenacious spirit helped her succeed.",
     ],
     successRate: 65,
     quizCount: 10,
@@ -114,7 +114,7 @@ export const MOCK_WORDS = [
     level: "B2",
     examples: [
       "The instructions were ambiguous and confusing.",
-      "His smile was ambiguous — we couldn't tell if he was happy."
+      "His smile was ambiguous — we couldn't tell if he was happy.",
     ],
     successRate: 55,
     quizCount: 8,
@@ -126,7 +126,7 @@ export const MOCK_WORDS = [
     level: "B1",
     examples: [
       "She is a diligent student who never misses class.",
-      "His diligent work led to a promotion."
+      "His diligent work led to a promotion.",
     ],
     successRate: 88,
     quizCount: 14,
@@ -138,7 +138,7 @@ export const MOCK_WORDS = [
     level: "C1",
     examples: [
       "The surgeon was meticulous in his approach.",
-      "She kept meticulous records of every transaction."
+      "She kept meticulous records of every transaction.",
     ],
     successRate: 70,
     quizCount: 9,
@@ -150,7 +150,7 @@ export const MOCK_WORDS = [
     level: "B1",
     examples: [
       "The lake was perfectly serene at dawn.",
-      "She had a serene smile on her face."
+      "She had a serene smile on her face.",
     ],
     successRate: 82,
     quizCount: 12,
@@ -162,7 +162,7 @@ export const MOCK_WORDS = [
     level: "C2",
     examples: [
       "His verbose explanations often confused the audience.",
-      "Try not to be verbose in your essays."
+      "Try not to be verbose in your essays.",
     ],
     successRate: 42,
     quizCount: 6,
@@ -174,7 +174,7 @@ export const MOCK_WORDS = [
     level: "B2",
     examples: [
       "She gave a candid assessment of the situation.",
-      "I appreciate your candid feedback."
+      "I appreciate your candid feedback.",
     ],
     successRate: 75,
     quizCount: 10,
@@ -183,6 +183,7 @@ export const MOCK_WORDS = [
 
 export const DEFAULT_SETTINGS = {
   typingMode: true,
+  quizMode: "TYPING", // "TYPING" | "MULTIPLE_CHOICE"
   quizDirection: "TR_TO_EN", // "TR_TO_EN" | "EN_TO_TR"
   darkMode: false,
   colorPalette: "#2b8cee", // blue default

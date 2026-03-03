@@ -7,6 +7,7 @@ import QuizSummaryPage from "./pages/QuizSummaryPage";
 import WordManagementPage from "./pages/WordManagementPage";
 import AddWordPage from "./pages/AddWordPage";
 import SettingsPage from "./pages/SettingsPage";
+import QuizzesPage from "./pages/QuizzesPage";
 import "./App.css";
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/vocabulary" element={<WordManagementPage />} />
         <Route path="/add-word" element={<AddWordPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/quizzes" element={<QuizzesPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

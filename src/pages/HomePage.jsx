@@ -14,13 +14,14 @@ export default function HomePage() {
     const [quizType, setQuizType] = useState(settings.quizType || "RECENT");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [quizCount, setQuizCount] = useState(5);
 
     async function handleStartQuiz() {
         setLoading(true);
         setError("");
         try {
             updateSettings({ quizType });
-            await startQuiz(quizType, 10);
+            await startQuiz(quizType, quizCount);
             navigate("/quiz");
         } catch (err) {
             setError("Backend'e bağlanılamadı. Sunucunun çalıştığından emin ol.");
@@ -45,6 +46,27 @@ export default function HomePage() {
 
                 {/* Start Quiz */}
                 <div className="flex flex-col gap-3 items-center animate-fade-up" style={{ animationDelay: "0.05s" }}>
+                    <div className="w-full max-w-[320px] flex flex-col gap-2">
+                        <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 text-left">
+                            Number of Questions
+                        </label>
+                        <div className="flex gap-2 justify-between">
+                            {[3, 5, 10, 20].map((count) => (
+                                <button
+                                    key={count}
+                                    type="button"
+                                    onClick={() => setQuizCount(count)}
+                                    className={`flex-1 py-2 rounded-lg font-bold text-lg border transition-all shadow-sm
+                                        ${quizCount === count
+                                            ? "bg-primary text-white border-primary scale-105"
+                                            : "bg-white dark:bg-slate-800 text-primary border-slate-300 dark:border-slate-700 hover:bg-primary/10 hover:border-primary"
+                                        }`}
+                                >
+                                    {count}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <button
                         onClick={handleStartQuiz}
                         disabled={loading}

@@ -5,10 +5,12 @@ import { wordsApi } from "../services/api";
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
 const JSON_TEMPLATE = `{
-  "word": "Resilient",
-  "translation": "Dirençli",
-  "level": "B2",
-  "examples": ["She is resilient."]
+    "english": "string",
+    "turkish": "string",
+    "level": "A1",
+    "examples": [
+        "string"
+    ]
 }`;
 
 export default function AddWordPage() {
@@ -73,8 +75,8 @@ export default function AddWordPage() {
         try {
             const parsed = JSON.parse(jsonInput);
             setForm({
-                english: parsed.word || "",
-                turkish: parsed.translation || "",
+                english: parsed.english || "",
+                turkish: parsed.turkish || "",
                 level: parsed.level || "",
                 examples: parsed.examples || ["", ""],
             });

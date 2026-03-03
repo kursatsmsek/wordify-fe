@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 
 const QUIZ_TYPES = [
-  { value: "LAST_WRONG", label: "Last Wrong" },
-  { value: "RECENT", label: "Recent" },
-  { value: "RANDOM", label: "Random" },
+  { value: "LAST_WRONG", label: "Last Wrong", icon: "priority_high" },
+  { value: "RECENT", label: "Recent", icon: "history" },
+  { value: "RANDOM", label: "Random", icon: "shuffle" },
 ];
 
 export default function HomePage() {
@@ -15,6 +15,8 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [quizCount, setQuizCount] = useState(5);
+
+  const primaryColor = settings.colorPalette;
 
   async function handleStartQuiz() {
     setLoading(true);
@@ -31,165 +33,240 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex justify-center py-12 px-4">
-      <div className="flex flex-col max-w-[640px] w-full gap-10">
-        {/* Hero */}
-        <div className="text-center animate-fade-up">
-          <h1 className="text-slate-900 dark:text-slate-100 tracking-tight text-[40px] font-black leading-tight pb-2">
+    <div className="flex flex-col items-center py-12 px-4">
+      <div className="w-full max-w-4xl">
+        {/* Header */}
+        <div className="mb-12 animate-fade-up">
+          <h1
+            className="text-5xl font-black mb-3 bg-clip-text text-transparent leading-tight"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${primaryColor}, color-mix(in srgb, ${primaryColor} 70%, #0099ff))`,
+            }}
+          >
             Ready to learn?
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-lg">
+          <p className="text-slate-600 dark:text-slate-400 text-lg">
             Pick up where you left off or start a fresh session.
           </p>
         </div>
 
-        {/* Start Quiz */}
+        {/* Main Quiz Card */}
         <div
-          className="flex flex-col gap-3 items-center animate-fade-up"
+          className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-8 mb-8 shadow-sm animate-fade-up"
           style={{ animationDelay: "0.05s" }}
         >
-          <div className="w-full max-w-[320px] flex flex-col gap-2">
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 text-left">
+          {/* Quiz Type Selection */}
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4">
+              Choose Quiz Type
+            </h2>
+            <div className="grid grid-cols-3 gap-4">
+              {QUIZ_TYPES.map((qt) => (
+                <button
+                  key={qt.value}
+                  onClick={() => setQuizType(qt.value)}
+                  className="group relative p-5 rounded-xl border-2 transition-all duration-300 flex flex-col items-center gap-3"
+                  style={{
+                    borderColor:
+                      quizType === qt.value ? primaryColor : "rgb(226 232 240)",
+                    backgroundColor:
+                      quizType === qt.value
+                        ? `${primaryColor}10`
+                        : "transparent",
+                  }}
+                >
+                  <span
+                    className="material-symbols-outlined text-3xl transition-colors group-hover:scale-110"
+                    style={{
+                      color:
+                        quizType === qt.value
+                          ? primaryColor
+                          : "rgb(107 114 128)",
+                    }}
+                  >
+                    {qt.icon}
+                  </span>
+                  <span
+                    className="text-sm font-bold uppercase tracking-wider transition-colors"
+                    style={{
+                      color:
+                        quizType === qt.value
+                          ? primaryColor
+                          : "rgb(107 114 128)",
+                    }}
+                  >
+                    {qt.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-slate-200 dark:bg-slate-700 mb-8"></div>
+
+          {/* Question Count Selection */}
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4">
               Number of Questions
-            </label>
-            <div className="flex gap-2 justify-between">
+            </h2>
+            <div className="grid grid-cols-4 gap-3">
               {[3, 5, 10, 20].map((count) => (
                 <button
                   key={count}
-                  type="button"
                   onClick={() => setQuizCount(count)}
-                  className={`flex-1 py-2 rounded-lg font-bold text-lg border transition-all shadow-sm
-                                        ${
-                                          quizCount === count
-                                            ? "bg-primary text-white border-primary scale-105"
-                                            : "bg-white dark:bg-slate-800 text-primary border-slate-300 dark:border-slate-700 hover:bg-primary/10 hover:border-primary"
-                                        }`}
+                  style={{
+                    backgroundColor:
+                      quizCount === count ? primaryColor : "rgb(241 245 249)",
+                    color: quizCount === count ? "white" : "rgb(71 85 105)",
+                    transform: quizCount === count ? "scale(1.05)" : "scale(1)",
+                  }}
+                  className="py-3 rounded-lg font-bold text-lg transition-all duration-200 dark:bg-slate-700 dark:text-slate-300"
                 >
                   {count}
                 </button>
               ))}
             </div>
           </div>
+
+          {/* Divider */}
+          <div className="h-px bg-slate-200 dark:bg-slate-700 mb-8"></div>
+
+          {/* Start Button */}
           <button
             onClick={handleStartQuiz}
             disabled={loading}
-            className="flex w-full max-w-[320px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-16 px-5 bg-primary text-white text-xl font-bold leading-normal tracking-wide hover:opacity-90 transition-all shadow-lg disabled:opacity-60"
             style={{
-              boxShadow:
-                "0 8px 30px color-mix(in srgb, var(--color-primary) 30%, transparent)",
+              background: `linear-gradient(135deg, ${primaryColor}, color-mix(in srgb, ${primaryColor} 70%, #0099ff))`,
+              boxShadow: `0 12px 32px ${primaryColor}40`,
             }}
+            className="w-full py-5 px-6 rounded-xl text-white font-bold text-xl transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
           >
-            <span className="flex items-center gap-2">
-              {loading ? (
+            {loading ? (
+              <>
                 <span className="material-symbols-outlined animate-spin text-2xl">
                   refresh
                 </span>
-              ) : (
-                <span className="material-symbols-outlined text-2xl">
+                Starting...
+              </>
+            ) : (
+              <>
+                <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">
                   play_circle
                 </span>
-              )}
-              {loading ? "Loading..." : "Start Quiz"}
-            </span>
+                Start Quiz
+              </>
+            )}
           </button>
+
+          {/* Error Message */}
           {error && (
-            <p className="text-red-500 text-sm text-center flex items-center gap-1">
-              <span className="material-symbols-outlined text-base">error</span>
+            <div className="mt-6 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/30 rounded-lg p-4 flex items-center gap-3 text-rose-700 dark:text-rose-400">
+              <span className="material-symbols-outlined">error</span>
               {error}
-            </p>
+            </div>
           )}
         </div>
 
-        {/* Quiz Type Selector */}
+        {/* Statistics Section */}
         <div className="animate-fade-up" style={{ animationDelay: "0.1s" }}>
-          <h4 className="text-slate-500 dark:text-slate-400 text-xs font-bold leading-normal tracking-[0.08em] px-4 pb-3 text-center uppercase">
-            Quiz Type
-          </h4>
-          <div className="flex px-4">
-            <div className="flex h-12 flex-1 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 p-1.5 gap-1">
-              {QUIZ_TYPES.map((qt) => (
-                <label
-                  key={qt.value}
-                  className={`flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-semibold transition-all ${
-                    quizType === qt.value
-                      ? "bg-white dark:bg-slate-700 shadow-sm text-primary"
-                      : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-                  }`}
-                >
-                  <span className="truncate">{qt.label}</span>
-                  <input
-                    className="sr-only"
-                    name="quiz_type"
-                    type="radio"
-                    value={qt.value}
-                    checked={quizType === qt.value}
-                    onChange={() => setQuizType(qt.value)}
-                  />
-                </label>
-              ))}
-            </div>
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-6">
+            Your Progress
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <StatCard
+              icon="list_alt"
+              label="Total Words"
+              value={
+                statsLoading ? "—" : (stats?.totalWords ?? "—").toLocaleString()
+              }
+              color="blue"
+              primaryColor={primaryColor}
+            />
+            <StatCard
+              icon="quiz"
+              label="Total Quizzes"
+              value={
+                statsLoading
+                  ? "—"
+                  : (stats?.totalQuizzes ?? "—").toLocaleString()
+              }
+              color="emerald"
+              primaryColor={primaryColor}
+            />
+            <StatCard
+              icon="trending_up"
+              label="Avg. Score"
+              value={
+                statsLoading ? "—" : stats ? `${stats.averageScore ?? 0}%` : "—"
+              }
+              color="amber"
+              primaryColor={primaryColor}
+            />
+            <StatCard
+              icon="check_circle"
+              label="Overall Success"
+              value={
+                statsLoading
+                  ? "—"
+                  : stats
+                    ? `${stats.overallSuccessRate ?? 0}%`
+                    : "—"
+              }
+              color="rose"
+              primaryColor={primaryColor}
+            />
           </div>
-        </div>
-
-        {/* Statistics */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 animate-fade-up"
-          style={{ animationDelay: "0.15s" }}
-        >
-          <StatCard
-            icon="list_alt"
-            label="Total Words"
-            value={
-              statsLoading ? "—" : (stats?.totalWords ?? "—").toLocaleString()
-            }
-          />
-          <StatCard
-            icon="quiz"
-            label="Total Quizzes"
-            value={
-              statsLoading ? "—" : (stats?.totalQuizzes ?? "—").toLocaleString()
-            }
-          />
-          <StatCard
-            icon="trending_up"
-            label="Avg. Score"
-            value={
-              statsLoading ? "—" : stats ? `${stats.averageScore ?? 0}%` : "—"
-            }
-          />
-          <StatCard
-            icon="check_circle"
-            label="Overall Success"
-            value={
-              statsLoading
-                ? "—"
-                : stats
-                  ? `${stats.overallSuccessRate ?? 0}%`
-                  : "—"
-            }
-          />
         </div>
 
         {/* Quick Actions */}
         <div
-          className="flex justify-center gap-4 px-4 animate-fade-up"
-          style={{ animationDelay: "0.2s" }}
+          className="flex gap-4 justify-center mt-12 animate-fade-up"
+          style={{ animationDelay: "0.15s" }}
         >
           <button
             onClick={() => navigate("/add-word")}
-            className="flex-1 max-w-[200px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-primary/50 transition-all font-medium text-sm"
+            className="flex-1 max-w-xs flex items-center justify-center gap-2 py-4 px-6 rounded-xl border-2 bg-white dark:bg-slate-800 font-bold transition-all duration-300"
+            style={{
+              borderColor: `${primaryColor}40`,
+              color: "rgb(55 65 81)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = primaryColor;
+              e.currentTarget.style.borderColor = primaryColor;
+              e.currentTarget.style.color = "white";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "white";
+              e.currentTarget.style.borderColor = `${primaryColor}40`;
+              e.currentTarget.style.color = "rgb(55 65 81)";
+            }}
           >
-            <span className="material-symbols-outlined text-xl text-primary">
-              add
+            <span className="material-symbols-outlined text-2xl">
+              add_circle
             </span>
             Add Words
           </button>
           <button
             onClick={() => navigate("/vocabulary")}
-            className="flex-1 max-w-[200px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-primary/50 transition-all font-medium text-sm"
+            className="flex-1 max-w-xs flex items-center justify-center gap-2 py-4 px-6 rounded-xl border-2 bg-white dark:bg-slate-800 font-bold transition-all duration-300"
+            style={{
+              borderColor: `${primaryColor}40`,
+              color: "rgb(55 65 81)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = primaryColor;
+              e.currentTarget.style.borderColor = primaryColor;
+              e.currentTarget.style.color = "white";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "white";
+              e.currentTarget.style.borderColor = `${primaryColor}40`;
+              e.currentTarget.style.color = "rgb(55 65 81)";
+            }}
           >
-            <span className="material-symbols-outlined text-xl text-primary">
-              book
+            <span className="material-symbols-outlined text-2xl">
+              library_books
             </span>
             My Words
           </button>
@@ -199,16 +276,51 @@ export default function HomePage() {
   );
 }
 
-function StatCard({ icon, label, value }) {
+function StatCard({ icon, label, value, color = "blue", primaryColor }) {
+  const darkBgMap = {
+    blue: "dark:bg-blue-950/50",
+    emerald: "dark:bg-emerald-950/50",
+    amber: "dark:bg-amber-950/50",
+    rose: "dark:bg-rose-950/50",
+  };
+
+  const darkBorderMap = {
+    blue: "dark:border-blue-900/30",
+    emerald: "dark:border-emerald-900/30",
+    amber: "dark:border-amber-900/30",
+    rose: "dark:border-rose-900/30",
+  };
+
+  const darkTextMap = {
+    blue: "dark:text-blue-300",
+    emerald: "dark:text-emerald-300",
+    amber: "dark:text-amber-300",
+    rose: "dark:text-rose-300",
+  };
+
+  const darkIconMap = {
+    blue: "dark:text-blue-400",
+    emerald: "dark:text-emerald-400",
+    amber: "dark:text-amber-400",
+    rose: "dark:text-rose-400",
+  };
+
   return (
-    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-xl text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-      <div className="text-primary mb-2 flex justify-center">
+    <div
+      className={`bg-white dark:bg-slate-800 border border-slate-200 ${darkBgMap[color]} ${darkBorderMap[color]} p-6 rounded-xl text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all`}
+    >
+      <div
+        className={`${darkIconMap[color]} mb-3 flex justify-center group-hover:scale-110 transition-transform`}
+        style={{ color: primaryColor }}
+      >
         <span className="material-symbols-outlined text-3xl">{icon}</span>
       </div>
       <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
         {label}
       </p>
-      <h3 className="text-slate-900 dark:text-slate-100 text-3xl font-black mt-1">
+      <h3
+        className={`text-slate-900 ${darkTextMap[color]} text-3xl font-black mt-2`}
+      >
         {value}
       </h3>
     </div>

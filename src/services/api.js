@@ -1,4 +1,4 @@
-const BASE = "http://localhost:8080";
+const BASE = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8080").replace(/\/+$/, "");
 
 async function request(url, options = {}) {
     const res = await fetch(`${BASE}${url}`, {

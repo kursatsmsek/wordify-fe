@@ -1,0 +1,9 @@
+services:
+  app:
+    image: ghcr.io/${GHCR_USERNAME}/wordify-fe:latest
+    container_name: wordify_fe_app
+    restart: always
+    ports:
+      - "${APP_PORT}:80"
+    env_file:
+      - .env

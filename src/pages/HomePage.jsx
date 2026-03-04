@@ -261,18 +261,46 @@ export default function HomePage() {
 }
 
 function StatCard({ icon, label, value, color = "blue", primaryColor }) {
+  const lightBgMap = {
+    blue: "bg-blue-100",
+    emerald: "bg-emerald-100",
+    amber: "bg-amber-100",
+    rose: "bg-rose-100",
+  };
+
+  const lightBorderMap = {
+    blue: "border-blue-200",
+    emerald: "border-emerald-200",
+    amber: "border-amber-200",
+    rose: "border-rose-200",
+  };
+
+  const lightTextMap = {
+    blue: "text-blue-700",
+    emerald: "text-emerald-700",
+    amber: "text-amber-700",
+    rose: "text-rose-700",
+  };
+
+  const lightIconMap = {
+    blue: "text-blue-600",
+    emerald: "text-emerald-600",
+    amber: "text-amber-600",
+    rose: "text-rose-600",
+  };
+
   const darkBgMap = {
-    blue: "dark:bg-blue-950/50",
-    emerald: "dark:bg-emerald-950/50",
-    amber: "dark:bg-amber-950/50",
-    rose: "dark:bg-rose-950/50",
+    blue: "dark:bg-blue-950/60",
+    emerald: "dark:bg-emerald-950/60",
+    amber: "dark:bg-amber-950/60",
+    rose: "dark:bg-rose-950/60",
   };
 
   const darkBorderMap = {
-    blue: "dark:border-blue-900/30",
-    emerald: "dark:border-emerald-900/30",
-    amber: "dark:border-amber-900/30",
-    rose: "dark:border-rose-900/30",
+    blue: "dark:border-blue-800/50",
+    emerald: "dark:border-emerald-800/50",
+    amber: "dark:border-amber-800/50",
+    rose: "dark:border-rose-800/50",
   };
 
   const darkTextMap = {
@@ -291,19 +319,20 @@ function StatCard({ icon, label, value, color = "blue", primaryColor }) {
 
   return (
     <div
-      className={`bg-white dark:bg-slate-800 border border-slate-200 ${darkBgMap[color]} ${darkBorderMap[color]} p-6 rounded-xl text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all`}
+      className={`${lightBgMap[color]} ${darkBgMap[color]} border ${lightBorderMap[color]} ${darkBorderMap[color]} p-6 rounded-xl text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all`}
     >
       <div
-        className={`${darkIconMap[color]} mb-3 flex justify-center group-hover:scale-110 transition-transform`}
-        style={{ color: primaryColor }}
+        className={`mb-3 flex justify-center transition-transform ${lightIconMap[color]} ${darkIconMap[color]}`}
       >
         <span className="material-symbols-outlined text-3xl">{icon}</span>
       </div>
-      <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+      <p
+        className={`text-xs font-bold uppercase tracking-wider ${lightTextMap[color]} opacity-60 dark:text-slate-400`}
+      >
         {label}
       </p>
       <h3
-        className={`text-slate-900 ${darkTextMap[color]} text-3xl font-black mt-2`}
+        className={`text-3xl font-black mt-2 ${lightTextMap[color]} ${darkTextMap[color]}`}
       >
         {value}
       </h3>

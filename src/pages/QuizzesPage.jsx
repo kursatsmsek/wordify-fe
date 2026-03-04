@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { quizzesApi } from "../services/api";
-import { AppContext } from "../context/AppContext";
+import { useApp } from "../context/AppContext";
 
 function getScoreColor(score) {
   if (score >= 70) return "text-emerald-500";
@@ -23,8 +23,8 @@ function getDirectionLabel(direction) {
 }
 
 export default function QuizzesPage() {
-  const appContext = useContext(AppContext);
-  const { colorPalette } = appContext?.settings || {};
+  const { settings } = useApp();
+  const { colorPalette } = settings || {};
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

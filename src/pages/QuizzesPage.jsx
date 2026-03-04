@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
+import { quizzesApi } from "../services/api";
+import { AppContext } from "../context/AppContext";
 
 function getScoreColor(score) {
   if (score >= 70) return "text-emerald-500";
@@ -22,6 +23,8 @@ function getDirectionLabel(direction) {
 }
 
 export default function QuizzesPage() {
+  const appContext = useContext(AppContext);
+  const { colorPalette } = appContext?.settings || {};
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -31,10 +34,8 @@ export default function QuizzesPage() {
       setLoading(true);
       setError("");
       try {
-        const res = await axios.get(
-          "http://localhost:8080/api/quizzes?page=0&size=20",
-        );
-        setQuizzes(res.data.content || []);
+        const res = await quizzesApi.getAll({ page: 0, size: 20 });
+        setQuizzes(res.content || []);
       } catch (err) {
         setError("Failed to fetch quizzes.");
       } finally {
@@ -49,7 +50,12 @@ export default function QuizzesPage() {
       <div className="w-full max-w-4xl">
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent mb-2">
+          <h1
+            className="text-4xl font-bold bg-clip-text text-transparent mb-2"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${colorPalette || "#2b8cee"}, ${colorPalette || "#2b8cee"}80)`,
+            }}
+          >
             Quiz History
           </h1>
           <p className="text-slate-600 dark:text-slate-400">

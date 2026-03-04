@@ -52,7 +52,7 @@ export default function HomePage() {
 
         {/* Main Quiz Card */}
         <div
-          className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-8 mb-8 shadow-sm animate-fade-up"
+          className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-8 mb-8 shadow-sm animate-fade-up"
           style={{ animationDelay: "0.05s" }}
         >
           {/* Quiz Type Selection */}
@@ -60,12 +60,12 @@ export default function HomePage() {
             <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4">
               Choose Quiz Type
             </h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               {QUIZ_TYPES.map((qt) => (
                 <button
                   key={qt.value}
                   onClick={() => setQuizType(qt.value)}
-                  className="group relative p-5 rounded-xl border-2 transition-all duration-300 flex flex-col items-center gap-3"
+                  className="group relative p-3 sm:p-5 rounded-xl border-2 transition-all duration-300 flex flex-col items-center gap-2 sm:gap-3"
                   style={{
                     borderColor:
                       quizType === qt.value ? primaryColor : "rgb(226 232 240)",
@@ -76,7 +76,7 @@ export default function HomePage() {
                   }}
                 >
                   <span
-                    className="material-symbols-outlined text-3xl transition-colors group-hover:scale-110"
+                    className="material-symbols-outlined text-2xl sm:text-3xl transition-colors group-hover:scale-110"
                     style={{
                       color:
                         quizType === qt.value
@@ -110,7 +110,7 @@ export default function HomePage() {
             <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4">
               Number of Questions
             </h2>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               {[3, 5, 10, 20].map((count) => (
                 <button
                   key={count}
@@ -121,7 +121,7 @@ export default function HomePage() {
                     color: quizCount === count ? "white" : "rgb(71 85 105)",
                     transform: quizCount === count ? "scale(1.05)" : "scale(1)",
                   }}
-                  className="py-3 rounded-lg font-bold text-lg transition-all duration-200 dark:bg-slate-700 dark:text-slate-300"
+                  className="py-2 sm:py-3 px-1 rounded-lg font-bold text-base sm:text-lg transition-all duration-200 dark:bg-slate-700 dark:text-slate-300"
                 >
                   {count}
                 </button>
@@ -140,7 +140,7 @@ export default function HomePage() {
               background: `linear-gradient(135deg, ${primaryColor}, color-mix(in srgb, ${primaryColor} 70%, #0099ff))`,
               boxShadow: `0 12px 32px ${primaryColor}40`,
             }}
-            className="w-full py-5 px-6 rounded-xl text-white font-bold text-xl transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
+            className="w-full py-4 sm:py-5 px-4 sm:px-6 rounded-xl text-white font-bold text-lg sm:text-xl transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 sm:gap-3 group"
           >
             {loading ? (
               <>
@@ -221,54 +221,38 @@ export default function HomePage() {
 
         {/* Quick Actions */}
         <div
-          className="flex gap-4 justify-center mt-12 animate-fade-up"
+          className="flex gap-2 sm:gap-4 justify-center mt-12 animate-fade-up"
           style={{ animationDelay: "0.15s" }}
         >
           <button
             onClick={() => navigate("/add-word")}
-            className="flex-1 max-w-xs flex items-center justify-center gap-2 py-4 px-6 rounded-xl border-2 bg-white dark:bg-slate-800 font-bold transition-all duration-300"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 py-3 px-3 sm:px-6 rounded-xl border-2 font-bold transition-all duration-300 text-xs sm:text-base hover:opacity-90"
             style={{
-              borderColor: `${primaryColor}40`,
-              color: "rgb(55 65 81)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = primaryColor;
-              e.currentTarget.style.borderColor = primaryColor;
-              e.currentTarget.style.color = "white";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "white";
-              e.currentTarget.style.borderColor = `${primaryColor}40`;
-              e.currentTarget.style.color = "rgb(55 65 81)";
+              backgroundColor: primaryColor,
+              borderColor: primaryColor,
+              color: "white",
             }}
           >
-            <span className="material-symbols-outlined text-2xl">
+            <span className="material-symbols-outlined text-xl sm:text-2xl">
               add_circle
             </span>
-            Add Words
+            <span className="hidden sm:inline">Add Words</span>
+            <span className="sm:hidden">Add</span>
           </button>
           <button
             onClick={() => navigate("/vocabulary")}
-            className="flex-1 max-w-xs flex items-center justify-center gap-2 py-4 px-6 rounded-xl border-2 bg-white dark:bg-slate-800 font-bold transition-all duration-300"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 py-3 px-3 sm:px-6 rounded-xl border-2 font-bold transition-all duration-300 text-xs sm:text-base hover:opacity-90"
             style={{
-              borderColor: `${primaryColor}40`,
-              color: "rgb(55 65 81)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = primaryColor;
-              e.currentTarget.style.borderColor = primaryColor;
-              e.currentTarget.style.color = "white";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "white";
-              e.currentTarget.style.borderColor = `${primaryColor}40`;
-              e.currentTarget.style.color = "rgb(55 65 81)";
+              backgroundColor: primaryColor,
+              borderColor: primaryColor,
+              color: "white",
             }}
           >
-            <span className="material-symbols-outlined text-2xl">
+            <span className="material-symbols-outlined text-xl sm:text-2xl">
               library_books
             </span>
-            My Words
+            <span className="hidden sm:inline">My Words</span>
+            <span className="sm:hidden">Words</span>
           </button>
         </div>
       </div>

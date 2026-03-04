@@ -53,6 +53,7 @@ export default function QuizzesPage() {
           <h1
             className="text-4xl font-bold bg-clip-text text-transparent mb-2"
             style={{
+              lineHeight: "inherit",
               backgroundImage: `linear-gradient(to right, ${colorPalette || "#2b8cee"}, ${colorPalette || "#2b8cee"}80)`,
             }}
           >

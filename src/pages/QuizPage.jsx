@@ -121,6 +121,24 @@ export default function QuizPage() {
     if (e.key === "Escape") handleSkip();
   }
 
+  function renderSentenceWithUnderline(text) {
+    if (!text) return null;
+    // Split by ? or {{}} to find placeholders
+    const parts = text.split(/(\?|{{}})/);
+    return parts.map((part, i) =>
+      part === "?" || part === "{{}}" ? (
+        <span
+          key={i}
+          className="border-b-2 border-primary/30 px-2 text-transparent select-none text-sm"
+        >
+          ______
+        </span>
+      ) : (
+        part
+      ),
+    );
+  }
+
   if (!currentWord) return null;
 
   return (
@@ -159,10 +177,7 @@ export default function QuizPage() {
           {exampleSentence && (
             <div className="max-w-md mx-auto mb-8">
               <p className="text-slate-500 dark:text-slate-400 text-base italic leading-relaxed">
-                {exampleSentence}{" "}
-                <span className="border-b-2 border-primary/30 px-2 text-transparent select-none text-sm">
-                  ______
-                </span>
+                {renderSentenceWithUnderline(exampleSentence)}
               </p>
             </div>
           )}

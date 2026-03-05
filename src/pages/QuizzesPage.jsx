@@ -22,6 +22,29 @@ function getDirectionLabel(direction) {
   return labels[direction] || direction;
 }
 
+function getRelativeDate(dateString) {
+  const quizDate = new Date(dateString);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  // Reset time for date comparison
+  quizDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  yesterday.setHours(0, 0, 0, 0);
+
+  if (quizDate.getTime() === today.getTime()) {
+    return "Today";
+  } else if (quizDate.getTime() === yesterday.getTime()) {
+    return "Yesterday";
+  } else {
+    const daysAgo = Math.floor(
+      (today.getTime() - quizDate.getTime()) / (1000 * 60 * 60 * 24),
+    );
+    return `${daysAgo} days ago`;
+  }
+}
+
 export default function QuizzesPage() {
   const { settings } = useApp();
   const { colorPalette } = settings || {};
@@ -49,9 +72,9 @@ export default function QuizzesPage() {
     <div className="flex flex-col items-center py-12 px-4">
       <div className="w-full max-w-4xl">
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-8 sm:mb-10">
           <h1
-            className="text-4xl font-bold bg-clip-text text-transparent mb-2"
+            className="text-2xl sm:text-4xl font-bold bg-clip-text text-transparent mb-2"
             style={{
               lineHeight: "inherit",
               backgroundImage: `linear-gradient(to right, ${colorPalette || "#2b8cee"}, ${colorPalette || "#2b8cee"}80)`,
@@ -109,77 +132,73 @@ export default function QuizzesPage() {
 
         {/* Quiz List */}
         {quizzes.length > 0 && (
-          <div className="space-y-4">
+          <div className="divide-y divide-slate-200 dark:divide-slate-700">
             {quizzes.map((quiz, idx) => (
               <div
                 key={quiz.id}
-                className="card animate-fade-up"
+                className="card animate-fade-up py-4 sm:py-6"
                 style={{ animationDelay: `${idx * 50}ms` }}
               >
-                <div className="p-6">
-                  {/* Top Row - Score and Date */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-4">
+                <div className="px-4 sm:px-6">
+                  {/* Top Row - Score and Direction */}
+                  <div className="flex justify-between items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 sm:gap-4">
                       <div
-                        className={`flex items-center justify-center w-16 h-16 rounded-lg font-bold text-lg ${getScoreBgColor(quiz.scorePercent)} ${getScoreColor(quiz.scorePercent)}`}
+                        className={`flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-lg font-bold text-base sm:text-lg ${getScoreBgColor(quiz.scorePercent)} ${getScoreColor(quiz.scorePercent)}`}
                       >
                         {quiz.scorePercent}%
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white capitalize">
+                        <h3 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white capitalize">
                           {quiz.quizType.replace(/_/g, " ")}
                         </h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">
-                          {new Date(quiz.quizDate).toLocaleDateString("en-US", {
-                            weekday: "short",
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}{" "}
-                          at{" "}
-                          {new Date(quiz.quizDate).toLocaleTimeString("en-US", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </p>
                       </div>
                     </div>
-                    <div className="px-4 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <div className="text-lg sm:text-xl">
                       {getDirectionLabel(quiz.quizDirection)}
                     </div>
                   </div>
 
+                  {/* Date and Time */}
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                    {getRelativeDate(quiz.quizDate)} at{" "}
+                    {new Date(quiz.quizDate).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+
                   {/* Stats Grid */}
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2 sm:p-3">
                       <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">
                         Total
                       </p>
-                      <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                      <p className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">
                         {quiz.totalCount}
                       </p>
                     </div>
-                    <div className="bg-emerald-50 dark:bg-emerald-950/20 rounded-lg p-3">
+                    <div className="bg-emerald-50 dark:bg-emerald-950/20 rounded-lg p-2 sm:p-3">
                       <p className="text-xs text-emerald-700 dark:text-emerald-400 mb-1">
                         Correct
                       </p>
-                      <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                      <p className="text-lg sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                         {quiz.correctCount}
                       </p>
                     </div>
-                    <div className="bg-rose-50 dark:bg-rose-950/20 rounded-lg p-3">
+                    <div className="bg-rose-50 dark:bg-rose-950/20 rounded-lg p-2 sm:p-3">
                       <p className="text-xs text-rose-700 dark:text-rose-400 mb-1">
                         Wrong
                       </p>
-                      <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">
+                      <p className="text-lg sm:text-2xl font-bold text-rose-600 dark:text-rose-400">
                         {quiz.wrongCount}
                       </p>
                     </div>
-                    <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-3">
+                    <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-2 sm:p-3">
                       <p className="text-xs text-blue-700 dark:text-blue-400 mb-1">
                         Rate
                       </p>
-                      <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      <p className="text-lg sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
                         {((quiz.correctCount / quiz.totalCount) * 100).toFixed(
                           0,
                         )}

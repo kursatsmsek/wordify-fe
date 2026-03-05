@@ -47,9 +47,6 @@ export default function QuizPage() {
       ? "Translate to English"
       : "Translate to Turkish";
 
-  // examples is now [{ id, sentence }] from API
-  const exampleSentence = currentWord?.examples?.[0]?.sentence || "";
-
   // MC options
   const [mcOptions, setMcOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -170,17 +167,9 @@ export default function QuizPage() {
           <span className="text-primary/60 text-xs font-bold uppercase tracking-widest mb-4">
             {promptLabel}
           </span>
-          <h1 className="text-slate-900 dark:text-slate-100 tracking-tight text-4xl md:text-5xl font-black leading-tight mb-6">
+          <h1 className="text-slate-900 dark:text-slate-100 tracking-tight text-4xl md:text-5xl font-black leading-tight mb-8">
             {questionWord}
           </h1>
-
-          {exampleSentence && (
-            <div className="max-w-md mx-auto mb-8">
-              <p className="text-slate-500 dark:text-slate-400 text-base italic leading-relaxed">
-                {renderSentenceWithUnderline(exampleSentence)}
-              </p>
-            </div>
-          )}
 
           {/* Typing mode */}
           {isTypingMode && (
@@ -268,9 +257,25 @@ export default function QuizPage() {
               })}
             </div>
           )}
+
+          {currentWord?.examples && currentWord.examples.length > 0 && (
+            <div className="w-full max-w-2xl mx-auto mt-10 px-5 py-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <h3 className="text-slate-600 dark:text-slate-400 text-xs font-bold uppercase tracking-wider mb-5">
+                Example Sentences
+              </h3>
+              <div className="flex flex-col gap-4">
+                {currentWord.examples.map((example, idx) => (
+                  <div key={example.id || idx} className="text-left">
+                    <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+                      {renderSentenceWithUnderline(example.sentence)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Keyboard hints */}
         {/* <div className="flex justify-center gap-8 text-slate-400 dark:text-slate-600 text-xs font-medium">
           <span className="flex items-center gap-1.5">
             <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-700 font-mono">

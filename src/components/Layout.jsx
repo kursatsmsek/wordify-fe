@@ -56,6 +56,9 @@ function Navbar() {
         <NavLink to="/quizzes" className={navLinkClass}>
           Quizzes
         </NavLink>
+        <NavLink to="/readings" className={navLinkClass}>
+          Readings
+        </NavLink>
         <NavLink to="/settings" className={navLinkClass}>
           Settings
         </NavLink>
@@ -132,6 +135,19 @@ function BottomNav() {
             history
           </span>
           <span className="text-xs font-semibold leading-none">History</span>
+        </button>
+
+        {/* Readings */}
+        <button
+          onClick={() => navigate("/readings")}
+          className={navItemClass("/readings")}
+        >
+          <span
+            className={`material-symbols-outlined text-xl ${isActive("/readings") ? "fill-1" : ""}`}
+          >
+            auto_stories
+          </span>
+          <span className="text-xs font-semibold leading-none">Readings</span>
         </button>
 
         {/* Settings */}

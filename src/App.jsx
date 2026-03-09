@@ -8,6 +8,8 @@ import WordManagementPage from "./pages/WordManagementPage";
 import AddWordPage from "./pages/AddWordPage";
 import SettingsPage from "./pages/SettingsPage";
 import QuizzesPage from "./pages/QuizzesPage";
+import ReadingListPage from "./pages/ReadingListPage";
+import ReadingDetailPage from "./pages/ReadingDetailPage";
 import "./App.css";
 
 export default function App() {
@@ -21,6 +23,8 @@ export default function App() {
         <Route path="/add-word" element={<AddWordPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/quizzes" element={<QuizzesPage />} />
+        <Route path="/readings" element={<ReadingListPage />} />
+        <Route path="/readings/:id" element={<ReadingDetailPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

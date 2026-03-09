@@ -201,9 +201,11 @@ export default function ReadingDetailPage() {
 
         {/* Passage Card */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 md:p-12 animate-pop-in">
-          <h1 className="text-slate-900 dark:text-slate-100 text-3xl md:text-4xl font-bold mb-8 leading-relaxed">
-            {reading.passage_en}
-          </h1>
+          <div className="prose prose-sm dark:prose-invert max-w-none mb-8">
+            <p className="text-slate-800 dark:text-slate-200 text-lg leading-8 font-normal">
+              {reading.passage_en}
+            </p>
+          </div>
 
           {/* Dropdown Sections */}
           <div className="space-y-3 mt-8">

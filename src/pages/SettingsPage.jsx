@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { DEFAULT_SETTINGS, COLOR_PALETTES } from "../data/mockWords";
 
+const MIN_READING_COUNT = 5;
+const MAX_READING_COUNT = 20;
+
 export default function SettingsPage() {
   const { settings, updateSettings } = useApp();
-  const [localSettings, setLocalSettings] = useState({ ...settings });
+  const [localSettings, setLocalSettings] = useState({
+    ...DEFAULT_SETTINGS,
+    ...settings,
+  });
   const [saved, setSaved] = useState(false);
 
   function handleToggle(key) {
@@ -19,6 +25,16 @@ export default function SettingsPage() {
 
   function handleColor(value) {
     setLocalSettings((s) => ({ ...s, colorPalette: value }));
+    setSaved(false);
+  }
+
+  function handleReadingCount(value) {
+    const parsed = Number(value);
+    const next = Math.max(
+      MIN_READING_COUNT,
+      Math.min(MAX_READING_COUNT, Number.isFinite(parsed) ? parsed : MIN_READING_COUNT),
+    );
+    setLocalSettings((s) => ({ ...s, readingCount: next }));
     setSaved(false);
   }
 
@@ -107,6 +123,30 @@ export default function SettingsPage() {
                     {dir === "TR_TO_EN" ? "TR → EN" : "EN → TR"}
                   </button>
                 ))}
+              </div>
+            </SettingRow>
+
+            <SettingRow
+              title="Reading Word Count"
+              description="Set how many source words will be used while creating a reading (5-20)."
+            >
+              <div className="flex flex-col gap-2 min-w-[210px]">
+                <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                  <span>5 words</span>
+                  <span className="font-bold text-primary">
+                    {localSettings.readingCount || MIN_READING_COUNT}
+                  </span>
+                  <span>20 words</span>
+                </div>
+                <input
+                  type="range"
+                  min={MIN_READING_COUNT}
+                  max={MAX_READING_COUNT}
+                  step={1}
+                  value={localSettings.readingCount || MIN_READING_COUNT}
+                  onChange={(e) => handleReadingCount(e.target.value)}
+                  className="w-full accent-primary"
+                />
               </div>
             </SettingRow>
           </SettingSection>

@@ -21,7 +21,10 @@ function loadFromStorage(key, fallback) {
 
 export function AppProvider({ children }) {
   const [settings, setSettings] = useState(() =>
-    loadFromStorage("wordify_settings", DEFAULT_SETTINGS),
+    ({
+      ...DEFAULT_SETTINGS,
+      ...loadFromStorage("wordify_settings", {}),
+    }),
   );
   const [stats, setStats] = useState(null);
   const [statsLoading, setStatsLoading] = useState(false);
@@ -191,7 +194,7 @@ export function AppProvider({ children }) {
   }, []);
 
   const resetSettings = useCallback(() => {
-    setSettings(DEFAULT_SETTINGS);
+    setSettings({ ...DEFAULT_SETTINGS });
   }, []);
 
   const value = {

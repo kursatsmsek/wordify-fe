@@ -1,16 +1,40 @@
 const BASE = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8080").replace(/\/+$/, "");
+const inFlightRequests = new Map();
+
+function buildRequestKey(url, options = {}) {
+    const method = (options.method || "GET").toUpperCase();
+    const body = typeof options.body === "string" ? options.body : JSON.stringify(options.body || "");
+    return `${method}::${url}::${body}`;
+}
 
 async function request(url, options = {}) {
-    const res = await fetch(`${BASE}${url}`, {
-        headers: { "Content-Type": "application/json", ...options.headers },
-        ...options,
-    });
-    if (res.status === 204) return null;
-    if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new Error(`API ${res.status}: ${text || res.statusText}`);
+    const requestUrl = `${BASE}${url}`;
+    const dedupe = options.dedupe !== false;
+    const key = dedupe ? buildRequestKey(requestUrl, options) : null;
+
+    if (key && inFlightRequests.has(key)) {
+        return inFlightRequests.get(key);
     }
-    return res.json();
+
+    const promise = (async () => {
+        const res = await fetch(requestUrl, {
+            headers: { "Content-Type": "application/json", ...options.headers },
+            ...options,
+        });
+        if (res.status === 204) return null;
+        if (!res.ok) {
+            const text = await res.text().catch(() => "");
+            throw new Error(`API ${res.status}: ${text || res.statusText}`);
+        }
+        return res.json();
+    })();
+
+    if (!key) return promise;
+
+    inFlightRequests.set(key, promise);
+    return promise.finally(() => {
+        inFlightRequests.delete(key);
+    });
 }
 
 // ─── Words ────────────────────────────────────────────────────────────────────

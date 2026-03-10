@@ -1,10 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
-import { useApp } from "../context/AppContext";
 
 export default function Layout() {
-  const { words } = useApp();
-
   return (
     <div className="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
       <Navbar />
@@ -79,22 +76,85 @@ function Navbar() {
 function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => {
+    if (path === "/") return location.pathname === "/";
+    return (
+      location.pathname === path || location.pathname.startsWith(`${path}/`)
+    );
+  };
+
+  const isMoreActive =
+    isActive("/quizzes") || isActive("/settings") || isActive("/add-word");
 
   const navItemClass = (path) => {
     const baseClass =
-      "flex flex-col items-center justify-center gap-0.5 py-1 px-2 rounded-lg transition-all";
+      "flex flex-col items-center justify-center gap-0.5 py-1 px-2 rounded-xl transition-all";
     return isActive(path)
       ? `${baseClass} text-primary bg-primary/10`
       : `${baseClass} text-slate-600 dark:text-slate-400 hover:text-primary hover:bg-primary/5`;
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-lg">
-      <div className="flex items-center justify-around h-16 px-1">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden">
+      {menuOpen && (
+        <div className="mx-3 mb-2 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-xl p-2 grid grid-cols-3 gap-2">
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              navigate("/quizzes");
+            }}
+            className={`flex flex-col items-center justify-center gap-1 rounded-xl py-2 transition-all ${
+              isActive("/quizzes")
+                ? "bg-primary/10 text-primary"
+                : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg">history</span>
+            <span className="text-[11px] font-semibold">Quizzes</span>
+          </button>
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              navigate("/settings");
+            }}
+            className={`flex flex-col items-center justify-center gap-1 rounded-xl py-2 transition-all ${
+              isActive("/settings")
+                ? "bg-primary/10 text-primary"
+                : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg">settings</span>
+            <span className="text-[11px] font-semibold">Settings</span>
+          </button>
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              navigate("/add-word");
+            }}
+            className={`flex flex-col items-center justify-center gap-1 rounded-xl py-2 transition-all ${
+              isActive("/add-word")
+                ? "bg-primary/10 text-primary"
+                : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg">add</span>
+            <span className="text-[11px] font-semibold">Add Word</span>
+          </button>
+        </div>
+      )}
+
+      <div className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-lg">
+        <div className="flex items-center justify-between h-16 px-2">
         {/* Home */}
-        <button onClick={() => navigate("/")} className={navItemClass("/")}>
+        <button
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/");
+          }}
+          className={navItemClass("/")}
+        >
           <span
             className={`material-symbols-outlined text-xl ${isActive("/") ? "fill-1" : ""}`}
           >
@@ -105,7 +165,10 @@ function BottomNav() {
 
         {/* Vocabulary */}
         <button
-          onClick={() => navigate("/vocabulary")}
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/vocabulary");
+          }}
           className={navItemClass("/vocabulary")}
         >
           <span
@@ -116,30 +179,30 @@ function BottomNav() {
           <span className="text-xs font-semibold leading-none">Words</span>
         </button>
 
-        {/* Quiz - Center floating button style */}
+        {/* Quiz */}
         <button
-          onClick={() => navigate("/quiz")}
-          className="flex flex-col items-center justify-center -mt-1 bg-primary text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-opacity relative z-50"
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/quiz");
+          }}
+          className={`flex flex-col items-center justify-center px-3 py-2 rounded-2xl transition-all ${
+            isActive("/quiz")
+              ? "bg-primary text-white shadow-md"
+              : "text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-primary/10"
+          }`}
         >
-          <span className="material-symbols-outlined text-xl fill-1">quiz</span>
-        </button>
-
-        {/* History */}
-        <button
-          onClick={() => navigate("/quizzes")}
-          className={navItemClass("/quizzes")}
-        >
-          <span
-            className={`material-symbols-outlined text-xl ${isActive("/quizzes") ? "fill-1" : ""}`}
-          >
-            history
+          <span className="material-symbols-outlined text-xl">quiz</span>
+          <span className="text-[11px] font-semibold leading-none mt-0.5">
+            Quiz
           </span>
-          <span className="text-xs font-semibold leading-none">History</span>
         </button>
 
         {/* Readings */}
         <button
-          onClick={() => navigate("/readings")}
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/readings");
+          }}
           className={navItemClass("/readings")}
         >
           <span
@@ -150,18 +213,19 @@ function BottomNav() {
           <span className="text-xs font-semibold leading-none">Readings</span>
         </button>
 
-        {/* Settings */}
+        {/* More */}
         <button
-          onClick={() => navigate("/settings")}
-          className={navItemClass("/settings")}
+          onClick={() => setMenuOpen((prev) => !prev)}
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-2 rounded-xl transition-all ${
+            isMoreActive || menuOpen
+              ? "text-primary bg-primary/10"
+              : "text-slate-600 dark:text-slate-400 hover:text-primary hover:bg-primary/5"
+          }`}
         >
-          <span
-            className={`material-symbols-outlined text-xl ${isActive("/settings") ? "fill-1" : ""}`}
-          >
-            settings
-          </span>
-          <span className="text-xs font-semibold leading-none">Settings</span>
+          <span className="material-symbols-outlined text-xl">apps</span>
+          <span className="text-xs font-semibold leading-none">More</span>
         </button>
+      </div>
       </div>
     </nav>
   );

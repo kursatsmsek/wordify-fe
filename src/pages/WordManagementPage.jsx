@@ -1,8 +1,33 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { wordsApi } from "../services/api";
 
 const PAGE_SIZE = 20;
+
+function normalizeWordsResponse(res) {
+  const content = Array.isArray(res?.content)
+    ? res.content
+    : Array.isArray(res?._embedded?.wordResponseList)
+      ? res._embedded.wordResponseList
+      : Array.isArray(res?._embedded?.words)
+        ? res._embedded.words
+        : [];
+
+  const pageInfo = res?.page || {};
+  const rawTotalElements =
+    res?.totalElements ?? pageInfo.totalElements ?? pageInfo.total_elements;
+  const totalElements = Number.isFinite(Number(rawTotalElements))
+    ? Number(rawTotalElements)
+    : content.length;
+
+  const rawTotalPages =
+    res?.totalPages ?? pageInfo.totalPages ?? pageInfo.total_pages;
+  const totalPages = Number.isFinite(Number(rawTotalPages))
+    ? Number(rawTotalPages)
+    : Math.max(1, Math.ceil(totalElements / PAGE_SIZE));
+
+  return { content, totalElements, totalPages };
+}
 
 export default function WordManagementPage() {
   const navigate = useNavigate();
@@ -25,13 +50,35 @@ export default function WordManagementPage() {
 
   // Fetch words
   useEffect(() => {
-    setLoading(true);
-    setError("");
-    wordsApi
-      .getAll({ q: debouncedSearch || undefined, page, size: PAGE_SIZE })
-      .then(setData)
-      .catch(() => setError("Backend'e bağlanılamadı."))
-      .finally(() => setLoading(false));
+    let cancelled = false;
+
+    async function fetchWords() {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await wordsApi.getAll({
+          q: debouncedSearch || undefined,
+          page,
+          size: PAGE_SIZE,
+        });
+        if (!cancelled) {
+          setData(normalizeWordsResponse(res));
+        }
+      } catch {
+        if (!cancelled) {
+          setError("Backend'e bağlanılamadı.");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchWords();
+    return () => {
+      cancelled = true;
+    };
   }, [debouncedSearch, page]);
 
   function handleDelete(id) {
@@ -44,7 +91,11 @@ export default function WordManagementPage() {
               ? {
                   ...prev,
                   content: prev.content.filter((w) => w.id !== id),
-                  totalElements: prev.totalElements - 1,
+                  totalElements: Math.max(0, prev.totalElements - 1),
+                  totalPages: Math.max(
+                    1,
+                    Math.ceil(Math.max(0, prev.totalElements - 1) / PAGE_SIZE),
+                  ),
                 }
               : prev,
           );

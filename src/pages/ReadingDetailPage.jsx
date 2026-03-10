@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import DropdownSection from "../components/DropdownSection";
+import { useApp } from "../context/AppContext";
 import { readingsApi } from "../services/api";
 
 function normalizeReadingResponse(res) {
@@ -8,7 +9,7 @@ function normalizeReadingResponse(res) {
   const readingContent = res.reading || {};
   return {
     id: res.id,
-    title: res.title || "",
+    title: readingContent.title || res.title || "",
     created_at: res.created_at,
     source_words: res.source_words || [],
     passage_en: readingContent.passage_en || "",
@@ -24,7 +25,7 @@ function normalizeCreateReadingResponse(res, createdAt) {
   const readingContent = res.reading || {};
   return {
     id: "new",
-    title: res.title || "New Reading",
+    title: readingContent.title || res.title || "New Reading",
     created_at: createdAt,
     source_words: res.source_words || [],
     passage_en: readingContent.passage_en || "",
@@ -39,6 +40,11 @@ export default function ReadingDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { settings } = useApp();
+  const readingCount = Math.max(
+    5,
+    Math.min(20, Number(settings?.readingCount) || 5),
+  );
   const [reading, setReading] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -52,11 +58,15 @@ export default function ReadingDetailPage() {
       try {
         if (id === "new") {
           const prefetched = location.state?.reading;
-          const createdAt = location.state?.createdAt || new Date().toISOString();
+          const createdAt =
+            location.state?.createdAt || new Date().toISOString();
           if (prefetched) {
             setReading(normalizeCreateReadingResponse(prefetched, createdAt));
           } else {
-            const res = await readingsApi.create({ count: 10, instruction: "" });
+            const res = await readingsApi.create({
+              count: readingCount,
+              instruction: "",
+            });
             setReading(normalizeCreateReadingResponse(res, createdAt));
           }
         } else {
@@ -70,7 +80,7 @@ export default function ReadingDetailPage() {
       }
     }
     fetchReading();
-  }, [id, location.state]);
+  }, [id, location.state, readingCount]);
 
   const handleAnswerSelect = (questionIndex, optionId) => {
     if (submitted) return;
@@ -92,7 +102,9 @@ export default function ReadingDetailPage() {
   const calculateScore = () => {
     if (!reading) return 0;
     if (!reading.questions.length) return 0;
-    return Math.round((calculateCorrectCount() / reading.questions.length) * 100);
+    return Math.round(
+      (calculateCorrectCount() / reading.questions.length) * 100,
+    );
   };
 
   const calculateCorrectCount = () => {
@@ -160,9 +172,9 @@ export default function ReadingDetailPage() {
         {/* Passage Card */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 md:p-12 animate-pop-in">
           {reading.title && (
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
               {reading.title}
-            </h1>
+            </h2>
           )}
           <div className="prose prose-sm dark:prose-invert max-w-none mb-8">
             <p className="text-slate-800 dark:text-slate-200 text-lg leading-8 font-normal">
@@ -315,7 +327,8 @@ export default function ReadingDetailPage() {
               </div>
             </div>
             <p className="text-slate-600 dark:text-slate-400 mb-4">
-              You got {calculateCorrectCount()} out of {reading.questions.length} questions correct.
+              You got {calculateCorrectCount()} out of{" "}
+              {reading.questions.length} questions correct.
             </p>
             <button
               onClick={handleReset}
@@ -327,22 +340,27 @@ export default function ReadingDetailPage() {
         )}
 
         {/* Submit Button */}
-        {!submitted && reading.questions.length > 0 && Object.keys(selectedAnswers).length === reading.questions.length && (
-          <button
-            onClick={handleSubmit}
-            className="bg-primary hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold text-base transition-all flex items-center justify-center gap-2 shadow-sm"
-          >
-            <span className="material-symbols-outlined text-lg">check</span>
-            Submit Answers
-          </button>
-        )}
+        {!submitted &&
+          reading.questions.length > 0 &&
+          Object.keys(selectedAnswers).length === reading.questions.length && (
+            <button
+              onClick={handleSubmit}
+              className="bg-primary hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold text-base transition-all flex items-center justify-center gap-2 shadow-sm"
+            >
+              <span className="material-symbols-outlined text-lg">check</span>
+              Submit Answers
+            </button>
+          )}
 
         {/* Instruction */}
-        {!submitted && reading.questions.length > 0 && Object.keys(selectedAnswers).length < reading.questions.length && (
-          <p className="text-center text-slate-500 dark:text-slate-400 text-sm">
-            Answer all questions ({Object.keys(selectedAnswers).length}/{reading.questions.length}) to submit
-          </p>
-        )}
+        {!submitted &&
+          reading.questions.length > 0 &&
+          Object.keys(selectedAnswers).length < reading.questions.length && (
+            <p className="text-center text-slate-500 dark:text-slate-400 text-sm">
+              Answer all questions ({Object.keys(selectedAnswers).length}/
+              {reading.questions.length}) to submit
+            </p>
+          )}
 
         <div className="h-10" />
       </div>

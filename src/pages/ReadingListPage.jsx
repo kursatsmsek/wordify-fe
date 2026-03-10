@@ -103,6 +103,10 @@ export default function ReadingListPage() {
   const navigate = useNavigate();
   const { settings } = useApp();
   const { colorPalette } = settings || {};
+  const readingCount = Math.max(
+    5,
+    Math.min(20, Number(settings?.readingCount) || 5),
+  );
   const [readings, setReadings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -128,7 +132,10 @@ export default function ReadingListPage() {
     setCreating(true);
     setError("");
     try {
-      const created = await readingsApi.create({ count: 10, instruction: "" });
+      const created = await readingsApi.create({
+        count: readingCount,
+        instruction: "",
+      });
       if (!created?.reading || !created?.source_words) {
         throw new Error("Invalid reading response");
       }
@@ -171,16 +178,21 @@ export default function ReadingListPage() {
 
         {/* New Reading Button */}
         <div className="mb-10">
-          <button
-            onClick={handleNewReading}
-            disabled={creating}
-            className="bg-primary hover:opacity-90 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center gap-2 shadow-sm"
-          >
-            <span className={`material-symbols-outlined text-base ${creating ? "animate-spin" : ""}`}>
-              {creating ? "refresh" : "add"}
-            </span>
-            {creating ? "Creating..." : "New Reading"}
-          </button>
+          <div className="flex flex-col items-start gap-2">
+            <button
+              onClick={handleNewReading}
+              disabled={creating}
+              className="bg-primary hover:opacity-90 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center gap-2 shadow-sm"
+            >
+              <span className={`material-symbols-outlined text-base ${creating ? "animate-spin" : ""}`}>
+                {creating ? "refresh" : "add"}
+              </span>
+              {creating ? "Creating..." : "New Reading"}
+            </button>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Uses {readingCount} source words (Settings)
+            </p>
+          </div>
         </div>
 
         {/* Loading State */}

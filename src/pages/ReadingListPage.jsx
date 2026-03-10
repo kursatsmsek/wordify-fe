@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import { readingsApi } from "../services/api";
+
+function extractReadingsFromResponse(res) {
+  if (!res) return [];
+  if (Array.isArray(res.content)) return res.content;
+  if (Array.isArray(res?._embedded?.readingSummaryResponseList)) {
+    return res._embedded.readingSummaryResponseList;
+  }
+  if (Array.isArray(res?._embedded?.readings)) return res._embedded.readings;
+  return [];
+}
 
 function getRelativeDate(dateString) {
   const readingDate = new Date(dateString);
+  if (Number.isNaN(readingDate.getTime())) return "-";
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
@@ -25,12 +37,75 @@ function getRelativeDate(dateString) {
   }
 }
 
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return "-";
+  return date.toLocaleDateString("tr-TR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function ReadingCard({ reading, index, onOpen }) {
+  const sourceWords = reading.source_words || [];
+  const title =
+    reading.title || sourceWords.slice(0, 3).join(", ") || "Reading Exercise";
+
+  return (
+    <button
+      onClick={onOpen}
+      className="w-full text-left rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/90 p-5 sm:p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all animate-fade-up"
+      style={{ animationDelay: `${index * 50}ms` }}
+    >
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <div className="min-w-0">
+          <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400 mb-2">
+            Reading #{reading.id}
+          </p>
+          <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-tight">
+            {title}
+          </h3>
+        </div>
+        <span className="material-symbols-outlined text-slate-400 bg-slate-100 dark:bg-slate-800 p-2 rounded-xl">
+          menu_book
+        </span>
+      </div>
+
+      <p className="text-sm text-slate-600 dark:text-slate-300 mb-4 line-clamp-2">
+        {sourceWords.length > 0
+          ? `Source words: ${sourceWords.join(", ")}`
+          : "No source words"}
+      </p>
+
+      <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
+            <span className="material-symbols-outlined text-sm">tag</span>
+            {sourceWords.length} words
+          </span>
+          <span className="text-slate-500 dark:text-slate-400">
+            {getRelativeDate(reading.created_at)} ({formatDate(reading.created_at)})
+          </span>
+        </div>
+        <span className="inline-flex items-center gap-1 font-semibold text-primary">
+          Open
+          <span className="material-symbols-outlined text-base">
+            arrow_forward
+          </span>
+        </span>
+      </div>
+    </button>
+  );
+}
+
 export default function ReadingListPage() {
   const navigate = useNavigate();
   const { settings } = useApp();
   const { colorPalette } = settings || {};
   const [readings, setReadings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -38,10 +113,8 @@ export default function ReadingListPage() {
       setLoading(true);
       setError("");
       try {
-        // TODO: Replace with actual API call when backend is ready
-        // const res = await readingsApi.getAll({ page: 0, size: 20 });
-        // setReadings(res.content || []);
-        setReadings([]);
+        const res = await readingsApi.getAll({ page: 0, size: 20 });
+        setReadings(extractReadingsFromResponse(res));
       } catch {
         setError("Failed to fetch readings.");
       } finally {
@@ -51,9 +124,30 @@ export default function ReadingListPage() {
     fetchReadings();
   }, []);
 
-  const handleNewReading = () => {
-    // TODO: This will trigger the AI call to generate reading passage
-    navigate("/readings/new");
+  const handleNewReading = async () => {
+    setCreating(true);
+    setError("");
+    try {
+      const created = await readingsApi.create({ count: 10, instruction: "" });
+      if (!created?.reading || !created?.source_words) {
+        throw new Error("Invalid reading response");
+      }
+      const createdAt = new Date().toISOString();
+      setReadings((prev) => [
+        {
+          id: "new",
+          title: "New Reading",
+          created_at: createdAt,
+          source_words: created.source_words || [],
+        },
+        ...prev,
+      ]);
+      navigate("/readings/new", { state: { reading: created, createdAt } });
+    } catch {
+      setError("Failed to create reading.");
+    } finally {
+      setCreating(false);
+    }
   };
 
   return (
@@ -79,10 +173,13 @@ export default function ReadingListPage() {
         <div className="mb-10">
           <button
             onClick={handleNewReading}
+            disabled={creating}
             className="bg-primary hover:opacity-90 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center gap-2 shadow-sm"
           >
-            <span className="material-symbols-outlined text-base">add</span>
-            New Reading
+            <span className={`material-symbols-outlined text-base ${creating ? "animate-spin" : ""}`}>
+              {creating ? "refresh" : "add"}
+            </span>
+            {creating ? "Creating..." : "New Reading"}
           </button>
         </div>
 
@@ -125,32 +222,22 @@ export default function ReadingListPage() {
 
         {/* Reading List */}
         {readings.length > 0 && (
-          <div className="divide-y divide-slate-200 dark:divide-slate-700">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between px-1">
+              <h2 className="text-sm sm:text-base font-bold text-slate-700 dark:text-slate-200">
+                Your Reading Library
+              </h2>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                {readings.length} items
+              </span>
+            </div>
             {readings.map((reading, idx) => (
-              <button
+              <ReadingCard
                 key={reading.id}
-                onClick={() => navigate(`/readings/${reading.id}`)}
-                className="w-full card animate-fade-up py-4 sm:py-6 text-left hover:shadow-md transition-all"
-                style={{ animationDelay: `${idx * 50}ms` }}
-              >
-                <div className="px-4 sm:px-6">
-                  <div className="flex justify-between items-start gap-4 mb-3">
-                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white flex-1">
-                      {reading.title}
-                    </h3>
-                    <span className="material-symbols-outlined text-slate-400">
-                      arrow_forward
-                    </span>
-                  </div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-3">
-                    {reading.preview}
-                  </p>
-                  <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-500">
-                    <span>{reading.wordCount} words</span>
-                    <span>{getRelativeDate(reading.createdAt)}</span>
-                  </div>
-                </div>
-              </button>
+                reading={reading}
+                index={idx}
+                onOpen={() => navigate(`/readings/${reading.id}`)}
+              />
             ))}
           </div>
         )}

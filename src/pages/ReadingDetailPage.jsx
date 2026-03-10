@@ -1,10 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import DropdownSection from "../components/DropdownSection";
+import { readingsApi } from "../services/api";
+
+function normalizeReadingResponse(res) {
+  if (!res) return null;
+  const readingContent = res.reading || {};
+  return {
+    id: res.id,
+    title: res.title || "",
+    created_at: res.created_at,
+    source_words: res.source_words || [],
+    passage_en: readingContent.passage_en || "",
+    passage_tr: readingContent.passage_tr || "",
+    target_words: readingContent.target_words || [],
+    extra_words: readingContent.extra_words || [],
+    questions: readingContent.questions || [],
+  };
+}
+
+function normalizeCreateReadingResponse(res, createdAt) {
+  if (!res) return null;
+  const readingContent = res.reading || {};
+  return {
+    id: "new",
+    title: res.title || "New Reading",
+    created_at: createdAt,
+    source_words: res.source_words || [],
+    passage_en: readingContent.passage_en || "",
+    passage_tr: readingContent.passage_tr || "",
+    target_words: readingContent.target_words || [],
+    extra_words: readingContent.extra_words || [],
+    questions: readingContent.questions || [],
+  };
+}
 
 export default function ReadingDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [reading, setReading] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -16,96 +50,18 @@ export default function ReadingDetailPage() {
       setLoading(true);
       setError("");
       try {
-        // TODO: Replace with actual API call when backend is ready
-        // const res = await readingsApi.getById(id);
-        // setReading(res);
-
-        // Mock data for demonstration
         if (id === "new") {
-          // TODO: This will be replaced with AI-generated content
-          setReading({
-            id: "demo-1",
-            passage_en:
-              "The university team decided to carry out a detailed study to assess the impact of renewable energy projects on local communities. Their significant findings will help establish new guidelines and provide clear recommendations for future initiatives. To achieve reliable results, the researchers required access to all available data sources and involved several experts from different fields. Throughout the process, they made sure to identify key variables, maintain rigorous standards, and demonstrate how each contribution could improve outcomes. The final report will ensure that policymakers can assess the effectiveness of the programs and decide which actions to require for sustainable development.",
-            passage_tr:
-              "Üniversite ekibi, yerel topluluklar üzerindeki yenilenebilir enerji projelerinin etkisini değerlendirmek için ayrıntılı bir çalışma yürütmeye karar verdi. Önemli bulguları, yeni yönergeler oluşturacak ve gelecekteki girişimler için açık tavsiyeler sağlayacak. Güvenilir sonuçlara ulaşmak için araştırmacılar tüm mevcut veri kaynaklarına erişim gerekti ve farklı alanlardan birçok uzmanı sürece dahil etti. Süreç boyunca, ana değişkenleri belirledi, sıkı standartları sürdürdü ve her katkının sonuçları nasıl iyileştirebileceğini gösterdi. Nihai rapor, politika yapıcıların programların etkinliğini değerlendirmesini ve sürdürülebilir kalkınma için hangi adımların gerekli olduğunu karar vermesini sağlayacak.",
-            target_words: [
-              { word: "carry out", meaning_tr: "gerçekleştirmek" },
-              { word: "significant", meaning_tr: "önemli" },
-              { word: "establish", meaning_tr: "kurmak" },
-              { word: "contribution", meaning_tr: "katkı" },
-              { word: "demonstrate", meaning_tr: "göstermek" },
-              { word: "assess", meaning_tr: "değerlendirmek" },
-              { word: "achieve", meaning_tr: "başarmak" },
-              { word: "require", meaning_tr: "gerektirmek" },
-              { word: "available", meaning_tr: "mevcut" },
-              { word: "process", meaning_tr: "süreç" },
-              { word: "ensure", meaning_tr: "sağlamak" },
-              { word: "identify", meaning_tr: "belirlemek" },
-              { word: "involve", meaning_tr: "dahil etmek" },
-              { word: "maintain", meaning_tr: "sürdürmek" },
-              { word: "provide", meaning_tr: "sağlamak" },
-            ],
-            extra_words: [{ word: "survey", meaning_tr: "anket" }],
-            questions: [
-              {
-                question: "What did the researchers carry out?",
-                options: [
-                  { id: "A", text: "A medical experiment" },
-                  { id: "B", text: "A detailed study on renewable energy" },
-                  { id: "C", text: "A language study" },
-                  { id: "D", text: "A financial review" },
-                ],
-                answer: "B",
-              },
-              {
-                question: "Which word describes the importance of the findings?",
-                options: [
-                  { id: "A", text: "significant" },
-                  { id: "B", text: "available" },
-                  { id: "C", text: "maintain" },
-                  { id: "D", text: "process" },
-                ],
-                answer: "A",
-              },
-              {
-                question:
-                  "What must policymakers do after reading the report?",
-                options: [
-                  { id: "A", text: "Establish new laws" },
-                  { id: "B", text: "Assess the effectiveness" },
-                  { id: "C", text: "Provide funding" },
-                  { id: "D", text: "Maintain current policies" },
-                ],
-                answer: "B",
-              },
-              {
-                question: "Which action was required to obtain reliable results?",
-                options: [
-                  {
-                    id: "A",
-                    text: "Access to all available data sources",
-                  },
-                  { id: "B", text: "To carry out a field trip" },
-                  { id: "C", text: "To demonstrate a hypothesis" },
-                  { id: "D", text: "To maintain equipment" },
-                ],
-                answer: "A",
-              },
-              {
-                question: "What does the passage say the researchers will provide?",
-                options: [
-                  { id: "A", text: "Clear recommendations" },
-                  { id: "B", text: "Financial support" },
-                  { id: "C", text: "New technology" },
-                  { id: "D", text: "Training sessions" },
-                ],
-                answer: "A",
-              },
-            ],
-          });
+          const prefetched = location.state?.reading;
+          const createdAt = location.state?.createdAt || new Date().toISOString();
+          if (prefetched) {
+            setReading(normalizeCreateReadingResponse(prefetched, createdAt));
+          } else {
+            const res = await readingsApi.create({ count: 10, instruction: "" });
+            setReading(normalizeCreateReadingResponse(res, createdAt));
+          }
         } else {
-          throw new Error("Reading not found");
+          const res = await readingsApi.getById(id);
+          setReading(normalizeReadingResponse(res));
         }
       } catch (err) {
         setError(err.message || "Failed to fetch reading.");
@@ -114,7 +70,7 @@ export default function ReadingDetailPage() {
       }
     }
     fetchReading();
-  }, [id]);
+  }, [id, location.state]);
 
   const handleAnswerSelect = (questionIndex, optionId) => {
     if (submitted) return;
@@ -135,13 +91,15 @@ export default function ReadingDetailPage() {
 
   const calculateScore = () => {
     if (!reading) return 0;
-    let correct = 0;
-    reading.questions.forEach((q, idx) => {
-      if (selectedAnswers[idx] === q.answer) {
-        correct++;
-      }
-    });
-    return Math.round((correct / reading.questions.length) * 100);
+    if (!reading.questions.length) return 0;
+    return Math.round((calculateCorrectCount() / reading.questions.length) * 100);
+  };
+
+  const calculateCorrectCount = () => {
+    if (!reading) return 0;
+    return reading.questions.reduce((count, question, idx) => {
+      return selectedAnswers[idx] === question.answer ? count + 1 : count;
+    }, 0);
   };
 
   if (loading) {
@@ -201,6 +159,11 @@ export default function ReadingDetailPage() {
 
         {/* Passage Card */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 md:p-12 animate-pop-in">
+          {reading.title && (
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+              {reading.title}
+            </h1>
+          )}
           <div className="prose prose-sm dark:prose-invert max-w-none mb-8">
             <p className="text-slate-800 dark:text-slate-200 text-lg leading-8 font-normal">
               {reading.passage_en}
@@ -263,6 +226,12 @@ export default function ReadingDetailPage() {
             Comprehension Questions
           </h2>
 
+          {reading.questions.length === 0 && (
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 text-slate-600 dark:text-slate-400">
+              This reading has no questions yet.
+            </div>
+          )}
+
           {reading.questions.map((question, qIdx) => (
             <div
               key={qIdx}
@@ -275,7 +244,7 @@ export default function ReadingDetailPage() {
               </p>
 
               <div className="space-y-2">
-                {question.options.map((option) => {
+                {(question.options || []).map((option) => {
                   const isSelected = selectedAnswers[qIdx] === option.id;
                   const isCorrect = option.id === question.answer;
                   const showResult = submitted && isSelected;
@@ -346,8 +315,7 @@ export default function ReadingDetailPage() {
               </div>
             </div>
             <p className="text-slate-600 dark:text-slate-400 mb-4">
-              You got {Object.values(selectedAnswers).filter((a, idx) => a === reading.questions[idx].answer).length} out of{" "}
-              {reading.questions.length} questions correct.
+              You got {calculateCorrectCount()} out of {reading.questions.length} questions correct.
             </p>
             <button
               onClick={handleReset}
@@ -359,7 +327,7 @@ export default function ReadingDetailPage() {
         )}
 
         {/* Submit Button */}
-        {!submitted && Object.keys(selectedAnswers).length === reading.questions.length && (
+        {!submitted && reading.questions.length > 0 && Object.keys(selectedAnswers).length === reading.questions.length && (
           <button
             onClick={handleSubmit}
             className="bg-primary hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold text-base transition-all flex items-center justify-center gap-2 shadow-sm"
@@ -370,7 +338,7 @@ export default function ReadingDetailPage() {
         )}
 
         {/* Instruction */}
-        {!submitted && Object.keys(selectedAnswers).length < reading.questions.length && (
+        {!submitted && reading.questions.length > 0 && Object.keys(selectedAnswers).length < reading.questions.length && (
           <p className="text-center text-slate-500 dark:text-slate-400 text-sm">
             Answer all questions ({Object.keys(selectedAnswers).length}/{reading.questions.length}) to submit
           </p>

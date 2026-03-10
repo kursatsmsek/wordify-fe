@@ -63,3 +63,21 @@ export const quizzesApi = {
     /** GET /api/quizzes/stats */
     getStats: () => request("/api/quizzes/stats"),
 };
+
+// ─── Readings ─────────────────────────────────────────────────────────────────
+
+export const readingsApi = {
+    /** GET /api/readings — paginated */
+    getAll: ({ page = 0, size = 20 } = {}) =>
+        request(`/api/readings?page=${page}&size=${size}`),
+
+    /** GET /api/readings/:id */
+    getById: (id) => request(`/api/readings/${id}`),
+
+    /** POST /api/readings/create */
+    create: (body = {}) =>
+        request("/api/readings/create", {
+            method: "POST",
+            body: JSON.stringify(body),
+        }),
+};

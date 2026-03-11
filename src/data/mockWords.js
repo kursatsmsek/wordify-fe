@@ -189,7 +189,7 @@ export const DEFAULT_SETTINGS = {
   colorPalette: "#2b8cee", // blue default
   quizType: "RECENT", // "LAST_WRONG" | "RECENT" | "RANDOM"
   quizCount: 10,
-  readingCount: 5,
+  readingCount: 3,
 };
 
 export const COLOR_PALETTES = [

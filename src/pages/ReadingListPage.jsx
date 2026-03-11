@@ -55,9 +55,11 @@ function ReadingCard({ reading, index, onOpen }) {
   return (
     <button
       onClick={onOpen}
-      className="w-full text-left rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/90 p-5 sm:p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all animate-fade-up"
+      className="relative overflow-hidden w-full text-left rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-900/80 dark:to-slate-800/70 p-5 sm:p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all animate-fade-up"
       style={{ animationDelay: `${index * 50}ms` }}
     >
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-primary/5 via-transparent to-transparent opacity-80" />
+
       <div className="flex items-start justify-between gap-4 mb-3">
         <div className="min-w-0">
           <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400 mb-2">
@@ -67,7 +69,7 @@ function ReadingCard({ reading, index, onOpen }) {
             {title}
           </h3>
         </div>
-        <span className="material-symbols-outlined text-slate-400 bg-slate-100 dark:bg-slate-800 p-2 rounded-xl">
+        <span className="material-symbols-outlined text-slate-500 bg-white/70 dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700 p-2 rounded-xl shadow-sm">
           menu_book
         </span>
       </div>
@@ -85,7 +87,8 @@ function ReadingCard({ reading, index, onOpen }) {
             {sourceWords.length} words
           </span>
           <span className="text-slate-500 dark:text-slate-400">
-            {getRelativeDate(reading.created_at)} ({formatDate(reading.created_at)})
+            {getRelativeDate(reading.created_at)} (
+            {formatDate(reading.created_at)})
           </span>
         </div>
         <span className="inline-flex items-center gap-1 font-semibold text-primary">
@@ -104,13 +107,14 @@ export default function ReadingListPage() {
   const { settings } = useApp();
   const { colorPalette } = settings || {};
   const readingCount = Math.max(
-    5,
-    Math.min(20, Number(settings?.readingCount) || 5),
+    3,
+    Math.min(20, Number(settings?.readingCount) || 3),
   );
   const [readings, setReadings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState("");
+  const [instruction, setInstruction] = useState("");
 
   useEffect(() => {
     async function fetchReadings() {
@@ -134,7 +138,7 @@ export default function ReadingListPage() {
     try {
       const created = await readingsApi.create({
         count: readingCount,
-        instruction: "",
+        instruction: instruction.trim() || "",
       });
       if (!created?.reading || !created?.source_words) {
         throw new Error("Invalid reading response");
@@ -150,6 +154,7 @@ export default function ReadingListPage() {
         ...prev,
       ]);
       navigate("/readings/new", { state: { reading: created, createdAt } });
+      setInstruction("");
     } catch {
       setError("Failed to create reading.");
     } finally {
@@ -178,20 +183,78 @@ export default function ReadingListPage() {
 
         {/* New Reading Button */}
         <div className="mb-10">
-          <div className="flex flex-col items-start gap-2">
-            <button
-              onClick={handleNewReading}
-              disabled={creating}
-              className="bg-primary hover:opacity-90 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center gap-2 shadow-sm"
-            >
-              <span className={`material-symbols-outlined text-base ${creating ? "animate-spin" : ""}`}>
-                {creating ? "refresh" : "add"}
-              </span>
-              {creating ? "Creating..." : "New Reading"}
-            </button>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Uses {readingCount} source words (Settings)
-            </p>
+          <div className="relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-white to-slate-50 dark:from-slate-900 dark:to-slate-800/70 shadow-sm p-5 sm:p-6">
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between relative">
+              <div className="flex-1 space-y-2">
+                <div className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400 font-bold">
+                  {/* <span className="material-symbols-outlined text-base">spark</span> */}
+                  Build New Reading
+                </div>
+                <h2 className="text-xl sm:text-2xl font-extrabold pb-4 pt-4 text-slate-900 dark:text-white leading-tight">
+                  Generate a fresh passage with your vocabulary
+                </h2>
+                <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 font-semibold">
+                    <span className="material-symbols-outlined text-sm">
+                      tag
+                    </span>
+                    {readingCount} source words (Settings)
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">
+                    Optional instruction
+                  </span>
+                </div>
+              </div>
+
+              <div className="w-full sm:w-[380px] flex flex-col gap-3">
+                <label className="text-xs font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1">
+                  Instruction (optional)
+                  <span className="text-[11px] font-normal text-slate-400 dark:text-slate-500">
+                    leave empty for default prompt
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  value={instruction}
+                  onChange={(e) => setInstruction(e.target.value)}
+                  placeholder="e.g. 'story style', 'business email', 'sci-fi passage'..."
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/60 transition-shadow"
+                />
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {["daily dialogue", "business email", "travel theme"].map(
+                    (preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setInstruction(preset)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors"
+                      >
+                        {preset}
+                      </button>
+                    ),
+                  )}
+                </div>
+                <button
+                  onClick={handleNewReading}
+                  disabled={creating}
+                  className={`inline-flex justify-center items-center gap-2 w-full sm:w-auto px-5 py-3 rounded-xl font-bold text-sm text-white shadow-sm transition-all ${
+                    creating
+                      ? "bg-primary/70 cursor-wait"
+                      : "bg-primary hover:opacity-90"
+                  }`}
+                >
+                  <span
+                    className={`material-symbols-outlined text-base ${
+                      creating ? "animate-spin" : ""
+                    }`}
+                  >
+                    {creating ? "refresh" : "add"}
+                  </span>
+                  {creating ? "Creating..." : "Generate Reading"}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { DEFAULT_SETTINGS, COLOR_PALETTES } from "../data/mockWords";
 
-const MIN_READING_COUNT = 5;
+const MIN_READING_COUNT = 3;
 const MAX_READING_COUNT = 20;
 
 export default function SettingsPage() {
@@ -128,11 +128,11 @@ export default function SettingsPage() {
 
             <SettingRow
               title="Reading Word Count"
-              description="Set how many source words will be used while creating a reading (5-20)."
+              description="Set how many source words will be used while creating a reading (3-20)."
             >
               <div className="flex flex-col gap-2 min-w-[210px]">
                 <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                  <span>5 words</span>
+                  <span>3 words</span>
                   <span className="font-bold text-primary">
                     {localSettings.readingCount || MIN_READING_COUNT}
                   </span>

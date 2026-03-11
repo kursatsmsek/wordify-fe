@@ -42,8 +42,8 @@ export default function ReadingDetailPage() {
   const location = useLocation();
   const { settings } = useApp();
   const readingCount = Math.max(
-    5,
-    Math.min(20, Number(settings?.readingCount) || 5),
+    3,
+    Math.min(20, Number(settings?.readingCount) || 3),
   );
   const [reading, setReading] = useState(null);
   const [loading, setLoading] = useState(true);

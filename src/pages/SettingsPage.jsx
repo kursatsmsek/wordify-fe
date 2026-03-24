@@ -4,6 +4,8 @@ import { DEFAULT_SETTINGS, COLOR_PALETTES } from "../data/mockWords";
 
 const MIN_READING_COUNT = 3;
 const MAX_READING_COUNT = 20;
+const MIN_QUIZ_COUNT = 30;
+const MAX_QUIZ_COUNT = 100;
 
 export default function SettingsPage() {
   const { settings, updateSettings } = useApp();
@@ -25,6 +27,16 @@ export default function SettingsPage() {
 
   function handleColor(value) {
     setLocalSettings((s) => ({ ...s, colorPalette: value }));
+    setSaved(false);
+  }
+
+  function handleQuizCount(value) {
+    const parsed = Number(value);
+    const next = Math.max(
+      MIN_QUIZ_COUNT,
+      Math.min(MAX_QUIZ_COUNT, Number.isFinite(parsed) ? parsed : MIN_QUIZ_COUNT),
+    );
+    setLocalSettings((s) => ({ ...s, quizCount: next }));
     setSaved(false);
   }
 
@@ -123,6 +135,30 @@ export default function SettingsPage() {
                     {dir === "TR_TO_EN" ? "TR → EN" : "EN → TR"}
                   </button>
                 ))}
+              </div>
+            </SettingRow>
+
+            <SettingRow
+              title="Default Quiz Questions"
+              description="Set how many questions a quiz starts with by default (30-100)."
+            >
+              <div className="flex flex-col gap-2 min-w-[230px]">
+                <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                  <span>{MIN_QUIZ_COUNT}</span>
+                  <span className="font-bold text-primary">
+                    {localSettings.quizCount || MIN_QUIZ_COUNT}
+                  </span>
+                  <span>{MAX_QUIZ_COUNT}</span>
+                </div>
+                <input
+                  type="range"
+                  min={MIN_QUIZ_COUNT}
+                  max={MAX_QUIZ_COUNT}
+                  step={5}
+                  value={localSettings.quizCount || MIN_QUIZ_COUNT}
+                  onChange={(e) => handleQuizCount(e.target.value)}
+                  className="w-full accent-primary"
+                />
               </div>
             </SettingRow>
 

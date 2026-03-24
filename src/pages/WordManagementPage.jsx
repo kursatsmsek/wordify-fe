@@ -118,6 +118,15 @@ export default function WordManagementPage() {
   const words = data?.content || [];
   const totalPages = data?.totalPages || 0;
   const totalElements = data?.totalElements || 0;
+  const maxPageButtons = 5;
+  const startPage = Math.max(
+    0,
+    Math.min(page - Math.floor(maxPageButtons / 2), Math.max(totalPages - maxPageButtons, 0)),
+  );
+  const pagesToShow = Array.from(
+    { length: Math.min(totalPages, maxPageButtons) },
+    (_, i) => startPage + i,
+  );
 
   return (
     <div className="flex justify-center py-8 px-4">
@@ -326,17 +335,17 @@ export default function WordManagementPage() {
               >
                 <span className="material-symbols-outlined">chevron_left</span>
               </button>
-              {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => (
+              {pagesToShow.map((p) => (
                 <button
-                  key={i}
-                  onClick={() => setPage(i)}
+                  key={p}
+                  onClick={() => setPage(p)}
                   className={`size-9 flex items-center justify-center rounded-full text-sm font-bold transition-colors ${
-                    i === page
+                    p === page
                       ? "bg-primary text-white shadow-sm"
                       : "hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                   }`}
                 >
-                  {i + 1}
+                  {p + 1}
                 </button>
               ))}
               <button

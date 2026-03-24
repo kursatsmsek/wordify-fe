@@ -7,6 +7,8 @@ const QUIZ_TYPES = [
   { value: "RECENT", label: "Recent", icon: "history" },
   { value: "RANDOM", label: "Random", icon: "shuffle" },
 ];
+const MIN_QUIZ_COUNT = 30;
+const MAX_QUIZ_COUNT = 100;
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -14,7 +16,11 @@ export default function HomePage() {
   const [quizType, setQuizType] = useState(settings.quizType || "RECENT");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [quizCount, setQuizCount] = useState(5);
+  const preferredQuizCount = Math.max(
+    MIN_QUIZ_COUNT,
+    Math.min(MAX_QUIZ_COUNT, settings.quizCount ?? 50),
+  );
+  const [quizCount, setQuizCount] = useState(preferredQuizCount);
 
   const primaryColor = settings.colorPalette;
 
@@ -110,8 +116,10 @@ export default function HomePage() {
             <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4">
               Number of Questions
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-              {[3, 5, 10, 20].map((count) => (
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
+              {Array.from(new Set([3, 5, 10, 20, preferredQuizCount]))
+                .sort((a, b) => a - b)
+                .map((count) => (
                 <button
                   key={count}
                   onClick={() => setQuizCount(count)}

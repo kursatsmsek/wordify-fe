@@ -188,7 +188,7 @@ export const DEFAULT_SETTINGS = {
   darkMode: false,
   colorPalette: "#2b8cee", // blue default
   quizType: "RECENT", // "LAST_WRONG" | "RECENT" | "RANDOM"
-  quizCount: 10,
+  quizCount: 50,
   readingCount: 3,
 };
 

@@ -21,6 +21,11 @@ export default function HomePage() {
     Math.min(MAX_QUIZ_COUNT, settings.quizCount ?? 50),
   );
   const [quizCount, setQuizCount] = useState(preferredQuizCount);
+  const quizCountOptions = Array.from(
+    new Set([3, 5, 10, 20, 30, preferredQuizCount]),
+  ).sort((a, b) => a - b);
+  const desktopQuizCountGridClass =
+    quizCountOptions.length >= 6 ? "sm:grid-cols-6" : "sm:grid-cols-5";
 
   const primaryColor = settings.colorPalette;
 
@@ -116,10 +121,10 @@ export default function HomePage() {
             <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4">
               Number of Questions
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
-              {Array.from(new Set([3, 5, 10, 20, preferredQuizCount]))
-                .sort((a, b) => a - b)
-                .map((count) => (
+            <div
+              className={`grid grid-cols-3 gap-2 sm:gap-3 ${desktopQuizCountGridClass}`}
+            >
+              {quizCountOptions.map((count) => (
                 <button
                   key={count}
                   onClick={() => setQuizCount(count)}
@@ -127,7 +132,13 @@ export default function HomePage() {
                     backgroundColor:
                       quizCount === count ? primaryColor : "rgb(241 245 249)",
                     color: quizCount === count ? "white" : "rgb(71 85 105)",
-                    transform: quizCount === count ? "scale(1.05)" : "scale(1)",
+                    transform:
+                      quizCount === count ? "scale(1.05)" : "scale(1)",
+                    gridColumn:
+                      quizCountOptions.length % 3 === 1 &&
+                      count === quizCountOptions[quizCountOptions.length - 1]
+                        ? "2 / span 1"
+                        : undefined,
                   }}
                   className="py-2 sm:py-3 px-1 rounded-lg font-bold text-base sm:text-lg transition-all duration-200 dark:bg-slate-700 dark:text-slate-300"
                 >
